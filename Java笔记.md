@@ -1293,25 +1293,25 @@ class ArrayAlg
 
 ## 4. 服务加载器
 
-> java.util.ServiceLoader<S> 1.6
+> java.util.ServiceLoader`<S>` 1.6
 
-- static <S> ServiceLoader<S> load(Class<S> service)
+- static `<S>` ServiceLoader`<S>` load(Class`<S>` service)
 
   创建一个服务加载器来加载实现了给定服务接口的类.
 
-- Iterator<S> iterator()
+- Iterator`<S>` iterator()
 
 - 生成一个以 "懒" 方式加载服务类的迭代器。也就是说，迭代器推进时才会加载类。
 
-- Stream<ServiceLoader.Provider<S>> stream()  9
+- Stream<ServiceLoader.Provider`<S>`> stream()  9
 
   返回提供者描述符的一个流, 从而可以采用懒方式加载所需类的提供者。
 
-- Optional<S> findFirstf)  9
+- Optional`<S>` findFirstf)  9
 
   查找第一个可用的服务提供者 (如果有)
 
-> java.util.ServiceLoader.Provider<S> 9
+> java.util.ServiceLoader.Provider`<S> `9
 
 - Class<? extends S>type()
 
@@ -1320,8 +1320,6 @@ class ArrayAlg
 - S get()
 
   获得这个提供者的实例。
-
-## 5.代理
 
 
 
