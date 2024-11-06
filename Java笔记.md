@@ -640,6 +640,7 @@ for(variable : collection) statement
 for(int element :a)
 	System.out.println(element);
 //会打印数组a的每一个元素，一个元素占一行。
+//element是临时变量，名称随意
 ```
 
 ### 4.2 拷贝数组
@@ -1805,4 +1806,100 @@ javac -Xlint sourceFiles
 ```
 
 # 五、集合
+
+分为单列集合和双列集合
+
+List系列集合：添加的元素是有序、可重复、有索引
+
+Set系列集合：添加的元素是无序、不重复、无索引
+
+## 1.单列集合顶层接口Collection
+
+Collection是单列集合的祖宗接口，它的功能是全部单列集合都可以继承使用的。
+
+| 方法名称                            | 说明                             |
+| ----------------------------------- | -------------------------------- |
+| public boolean add(E e)             | 把给定的对象添加到当前集合中     |
+| public void clear()                 | 清空集合中所有的元素             |
+| public boolean remove(E e)          | 把给定的对象在当前集合中删除     |
+| public boolean contains(object obj) | 判断当前集合中是否包含给定的对象 |
+| public boolean isEmpty()            | 判断当前集合是否为空             |
+| public int size()                   | 返回集合中元素的个数/集合的长度  |
+
+关于contains函数：
+
+contains方法在底层是依赖equals方法判断对象是否一致的。如果存的是自定义对象(结构体)，没有重写equals方法，那么默认使用Object类中的equals方法进行判断，而Object类中的equals方法，依赖地址值进行判断。
+
+## 2.Collection的遍历方式
+
+### 1.迭代器Iterator
+
+> 集合专用的遍历方式。
+
+Collection集合获取迭代器
+
+| 方法名称                 | 说明                                    |
+| ------------------------ | --------------------------------------- |
+| `Iterator<E> iterator()` | 返回迭代器对象，默认指向当前集合的O索引 |
+
+lterator中的常用方法
+
+| 方法名称          | 说明                                                      |
+| ----------------- | --------------------------------------------------------- |
+| boolean hasNext() | 判断当前位置是否有元素，有元素返回true ,没有元素返回false |
+| E next()          | 获取当前位置的元素，并将迭代器对象移向下一个位置。        |
+
+**注意：**
+
+1，迭代器遍历完毕，指针不会复位
+
+2，循环中只能用一次next方法（若用了两次，且指针已指向null后再次调用迭代器继续遍历，则报错NoSuchElementException）
+
+3，迭代器遍历时，不能用集合的方法(add方法等)进行增加或者删除
+
+
+
+### 2.增强for遍历--foreach
+
+- 增强for的底层就是迭代器，为了简化迭代器的代码书写的。
+- 它是JDK5之后出现的，其内部原理就是一个lterator迭代器。
+- 所有的单列集合和数组才能用增强for进行遍历。
+
+语法：
+
+```java
+for(元素的数据类型 变量名 :数组或者集合){
+    
+}
+```
+
+修改增强for中的变量，不会改变集合中原本的元素。
+
+### 3.lambda表达式
+
+| 方法名称                                          | 说明               |
+| ------------------------------------------------- | ------------------ |
+| default void foreach(Consumer<? super T> action): | 结合lambda遍历集合 |
+
+例：
+
+```java
+Collection<String> coll=new ArrayList<>();
+            coll.add("aaa");
+            coll.add("bbb");
+            coll.add("ccc");
+coll.forEach(s->{System.out.println(s);});
+```
+
+## 3.List系列集合
+
+- collection的方法List都继承了
+- List集合因为有索引，所以多了很多索引操作的方法。
+
+| 方法名称                      | 说明                                   |
+| ----------------------------- | -------------------------------------- |
+| void add(int index,E element) | 在此集合中的指定位置插入指定的元素     |
+| E remove(int index)           | 删除指定索引处的元素，返回被删除的元素 |
+| E set(int index,E element)    | 修改指定索引处的元素，返回被修改的元素 |
+| E get(int index)              | 返回指定索引处的元素                   |
 
