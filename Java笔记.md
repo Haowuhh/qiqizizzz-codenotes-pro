@@ -1901,3 +1901,24 @@ coll.forEach(s->{System.out.println(s);});
 | E set(int index,E element)    | 修改指定索引处的元素，返回被修改的元素 |
 | E get(int index)              | 返回指定索引处的元素                   |
 
+遍历方式：
+
+迭代器遍历--在遍历的过程中需要删除元素，请使用迭代器。
+
+增强for遍历--仅仅想遍历，那么使用增强for或Lambda表达式
+
+Lambda表达式遍历--仅仅想遍历，那么使用增强for或Lambda表达式
+
+普通for循环(因为List集合存在索引)--如果遍历的时候想操作索引，可以用普通for。
+
+列表迭代器遍历--在遍历的过程中需要添加元素，请使用列表迭代器
+
+### 列表迭代器遍历--ListIterator
+
+```java
+ListIterator<String> it2=list.listIterator();
+        while (it2.hasNext()) {
+            System.out.println(it2.next());
+        }
+```
+
