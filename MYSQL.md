@@ -199,6 +199,17 @@ DROP DATABASE[IF EXISTS]数据库名;
 USE 数据库名;
 ```
 
+**5.更改数据库名**
+
+```mysql
+ALTER DATABASE old_data_name RENAME TO new_database_name;
+或者
+RENAME DATABASE old_name TO new_name;
+# 这两种方法在mysql5.1.23后被去掉了T^T
+```
+
+
+
 ### DDL-表操作-创建&查询
 
 **1.创建**
@@ -441,7 +452,7 @@ SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1，字段2 排序�
 **1．语法**
 
 ```mysql
-SELECT字段列表 FROM 表名 LIMIT 起始索引,查询记录数;
+SELECT 字段列表 FROM 表名 LIMIT 起始索引,查询记录数;
 ```
 
 注意
@@ -599,7 +610,115 @@ MySQL中内置了很多字符串函数，常用的几个如下:
 | 检查约束(8.0.16版本之后) | 保证字段值满足某一个条件                                 |
 | 外键约束                 | 用来让两张表的数据之间建立连接，保证数据的一致性和完整性 |
 
-### 外键约束
+### 8.1 SQL CREATE TABLE + CONSTRAINT 语法
+
+```mysql
+CREATE TABLE table_name
+(
+    column_name1 data_type(size) constraint_name,
+    column_name2 data_type(size) constraint_name,
+    column_name3 data_type(size) constraint_name,
+    ....
+);
+```
+
+在 SQL 中，我们有如下约束：
+
+- **NOT NULL** - 指示某列不能存储 NULL 值。
+- **UNIQUE** - 保证某列的每行必须有唯一的值。
+- **PRIMARY KEY** - NOT NULL 和 UNIQUE 的结合。确保某列（或两个列多个列的结合）有唯一标识，有助于更容易更快速地找到表中的一个特定的记录。
+- **FOREIGN KEY** - 保证一个表中的数据匹配另一个表中的值的参照完整性。
+- **CHECK** - 保证列中的值符合指定的条件。
+- **DEFAULT** - 规定没有给列赋值时的默认值。
+- **INDEX** - 用于快速访问数据库表中的数据。
+
+#### 1. NOT NULL
+
+确保列不能有 NULL 值。
+
+```mysql
+CREATE TABLE Students (
+    StudentID INT NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    FirstName VARCHAR(50),
+    Age INT
+);
+```
+
+#### 2. UNIQUE
+
+确保列中的所有值都是唯一的。
+
+```mysql
+CREATE TABLE Employees (
+    EmployeeID INT NOT NULL UNIQUE,
+    LastName VARCHAR(50) NOT NULL,
+    FirstName VARCHAR(50),
+    Email VARCHAR(100) UNIQUE
+);
+```
+
+#### 3. PRIMARY KEY
+
+唯一标识表中的每一行记录。PRIMARY KEY 约束是 NOT NULL 和 UNIQUE 的结合。
+
+```mysql
+CREATE TABLE Orders (
+    OrderID INT NOT NULL PRIMARY KEY,
+    OrderNumber INT NOT NULL,
+    OrderDate DATE NOT NULL
+);
+```
+
+#### 4. FOREIGN KEY
+
+确保一个表中的值匹配另一个表中的值，从而建立两表之间的关系。
+
+```mysql
+CREATE TABLE Orders (
+    OrderID INT NOT NULL PRIMARY KEY,
+    OrderNumber INT NOT NULL,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+```
+
+#### 5. CHECK
+
+确保列中的值满足特定的条件。
+
+```mysql
+CREATE TABLE Products (
+    ProductID INT NOT NULL PRIMARY KEY,
+    ProductName VARCHAR(100) NOT NULL,
+    Price DECIMAL(10, 2) CHECK (Price >= 0)
+);
+```
+
+#### 6. DEFAULT
+
+为列设置默认值。
+
+```mysql
+CREATE TABLE Customers (
+    CustomerID INT NOT NULL PRIMARY KEY,
+    LastName VARCHAR(50) NOT NULL,
+    FirstName VARCHAR(50),
+    JoinDate DATE DEFAULT GETDATE()
+);
+```
+
+#### 7. INDEX
+
+用于快速访问数据库表中的数据。
+
+```mysql
+CREATE INDEX idx_lastname ON Employees (LastName);
+```
+
+
+
+### 8.2 外键约束
 
 删除/更新行为
 
@@ -624,7 +743,7 @@ CREATE TABLE表名(
 ```
 
 ```mysql
-ALTER TABLE表名 ADD CONSTRAINT 外键名称FOREIGN KEY(外键字段名)REFERENCES主表(主表列名);
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY(外键字段名)REFERENCES主表(主表列名);
 ```
 
 > 删除外键
@@ -935,7 +1054,7 @@ MEMORY:将所有数据保存在内存中，访问速度快，通常用于临时�
 
 ## 2.索引
 
-### 1.结构
+### 2.1 结构
 
 **Biglnteger构造方法**
 
@@ -965,7 +1084,7 @@ MEMORY:将所有数据保存在内存中，访问速度快，通常用于临时�
 
 
 
-### 2.分类
+### 2.2 分类
 
 | 分类     | 含义                                                 | 特点                    | 关键字   |
 | -------- | ---------------------------------------------------- | ----------------------- | -------- |
@@ -989,7 +1108,7 @@ MEMORY:将所有数据保存在内存中，访问速度快，通常用于临时�
 
 > 如果表没有主键，或没有合适的唯一索引，则nnoDB会自动生成一个rowid作为隐藏的聚集索引。
 
-### 3.语法
+### 2.3 语法
 
 **1.创建索引**
 
@@ -1009,7 +1128,7 @@ SHOW INDEX FROM table_name;
 DROP INDEX index_name ON table_name;
 ```
 
-### 4.性能分析
+### 2.4 性能分析
 
 **1.SQL执行频率**
 
