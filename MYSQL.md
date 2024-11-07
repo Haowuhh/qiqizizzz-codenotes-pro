@@ -1029,7 +1029,7 @@ MySQL的慢查询日志默认没有开启，需要在MySQL的配置文件(/etc/m
 ```mysql
 #开启MySQL慢日志查询开关
 slow_query_log=1
-公
+
 #设置慢日志的时间为2秒，SQL语句执行时间超过2秒，就会视为慢查询，记录慢查询日志
 long_query_time=2
 ```
