@@ -718,7 +718,11 @@ CREATE INDEX idx_lastname ON Employees (LastName);
 
 
 
-### 8.2 外键约束
+### 8.2 外键约束--FOREIGN KEY
+
+- 外键是表中引用另一表主键的列。
+- 外键的值必须与被引用表的相应主键值匹配。
+- 外键可以用于建立表之间的关系。
 
 删除/更新行为
 
@@ -743,7 +747,7 @@ CREATE TABLE表名(
 ```
 
 ```mysql
-ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY(外键字段名)REFERENCES主表(主表列名);
+ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY(外键字段名) REFERENCES 主表(主表列名);
 ```
 
 > 删除外键
@@ -751,6 +755,45 @@ ALTER TABLE 表名 ADD CONSTRAINT 外键名称 FOREIGN KEY(外键字段名)REFER
 ```mysql
 ALTER TABLE 表名 DROP FOREIGN KEY 外键名称;
 ```
+
+### 8.3 主键约束--PRIMARY KEY
+
+- 主键是表中唯一标识每行的列。
+- 主键的值必须是唯一的，并且不能为 null。
+- 每个表只能有一个主键。
+
+**设置主键**
+
+```mysql
+ALTER TABLE table_name ADD PRIMARY KEY (column_name);
+#例如，在 customers 表中设置 customer_id 列为主键：
+ALTER TABLE customers ADD PRIMARY KEY (customer_id);
+```
+
+
+
+### 8.4 自增列--MODIFY
+
+如果某一列是数值类型的，使用 auto_increment 可以来完成值得自动增长
+
+方式1:创建表时，添加主键约束，并且完成主键自增长
+
+```mysql
+create table stu(
+	id int primary key auto_increment, -- 给id添加主键约束
+	name varchar(20)
+);
+```
+
+方式2:创建完表之后添加自动增长
+
+```mysql
+ALTER TABLE stu MODIFY id INT AUTO_INCREMENT;
+
+ALTER TABLE stu MODIFY id INT; -- 删除自动增长
+```
+
+
 
 ## 9.多表查询
 
@@ -864,7 +907,7 @@ union all会将全部的数据直接合并在一起，union会对合并之后的
 
 子查询返回的结果是单个值（数字、字符串、日期等)，最简单的形式，这种子查询成为标量子查询。
 
-常用的操作符:= > >= < <=
+常用的操作符:`=`、 `>`、 `>=`、 `<`、 `<=`
 
 ### 子查询-列子查询
 
@@ -872,25 +915,25 @@ union all会将全部的数据直接合并在一起，union会对合并之后的
 
 常用的操作符:IN 、NOT IN、ANY 、SOME、ALL
 
-| 操作符 | 描述                                   |
-| ------ | -------------------------------------- |
-| IN     | 在指定的集合范围之内，多选一           |
-| NOT IN | 不在指定的集合范围之内                 |
-| ANY    | 子查询返回列表中，有任意一个满足即可   |
-| SOME   | 与ANY等同，使用SOME的地方都可以使用ANY |
-| ALL    | 子查询返回列表的所有值都必须满足       |
+| 操作符   | 描述                                   |
+| -------- | -------------------------------------- |
+| `IN`     | 在指定的集合范围之内，多选一           |
+| `NOT IN` | 不在指定的集合范围之内                 |
+| `ANY`    | 子查询返回列表中，有任意一个满足即可   |
+| `SOME`   | 与ANY等同，使用SOME的地方都可以使用ANY |
+| `ALL`    | 子查询返回列表的所有值都必须满足       |
 
 ### 子查询-行子查询
 
 子查询返回的结果是一行（可以是多列），这种子查询称为行子查询。
 
-常用的操作符:= 、<>、IN 、NOT IN
+常用的操作符:`=` 、`<>`、`IN` 、`NOT IN`
 
 ### 子查询-表子查询
 
 子查询返回的结果是多行多列，这种子查询称为表子查询。
 
-常用的操作符:IN
+常用的操作符:`IN`
 
 
 

@@ -116,7 +116,7 @@ HTML使用标签 **`<a>`** 来设置超文本链接。
 
 当您把鼠标指针移动到网页中的某个链接上时，箭头会变为一只小手。
 
-在标签 `<a> `中使用了 **href** 属性来描述链接的地址。
+在标签 `<a> `中使用了 **`href`** 属性来描述链接的地址。
 
 默认情况下，链接将以以下形式出现在浏览器中：
 
@@ -770,7 +770,7 @@ CSS 可以通过以下方式添加到HTML中:
 <h1 style="text-align:center;">居中对齐的标题</h1> <p>这是一个段落。</p>
 ```
 
-### CSS 引入外部标签
+### CSS 引入外部标签`link`
 
 第一种方式：使用最多，稳定
 
@@ -808,7 +808,7 @@ CSS 可以通过以下方式添加到HTML中:
 
 ## 6.HTML图像
 
-**1. HTML 图像- 图像标签（ `<img>`）、`alt`属性和源属性（`Src``）**
+**1. HTML 图像- 图像标签（ `<img>`）、`alt`属性和源属性（`Src`）**
 
 在 HTML 中，图像由`<img>` 标签定义。
 
@@ -841,6 +841,22 @@ height（高度） 与 width（宽度）属性用于设置图像的高度与宽�
 ```
 
 **提示:** 指定图像的高度和宽度是一个很好的习惯。如果图像指定了高度宽度，页面加载时就会保留指定的尺寸。如果没有指定图片的大小，加载页面时有可能会破坏HTML页面的整体布局。
+
+**3.HTML 图像-网站图标**
+
+[如何在浏览器标题前端显示一张图片](https://blog.csdn.net/ggq53219/article/details/139016760?sharetype=blogdetail&shareId=139016760&sharerefer=APP&sharesource=2301_81250551&sharefrom=link)
+
+使用 Favicon（网站图标）：Favicon 是一个小的图标，通常显示在浏览器标签页的左上角或地址栏旁边。你可以使用 .ico 或 .png 格式的图片作为 Favicon。在 HTML 中，你可以通过 `<link>` 标签的 rel="icon" 属性来引用它。
+
+```html
+<link rel="icon" href="image/cs.ico" type="image/x-icon">
+```
+
+或者，对于 PNG 格式：
+
+```html
+<link rel="icon" type="image/png" size="16x16" href="image/cs.png">
+```
 
 ## 7.HTML表格
 
@@ -1461,7 +1477,58 @@ HTML 中的预留字符必须被替换为字符实体。
 
 HTML 中的常用字符实体是不间断空格(&nbsp;)。
 
-浏览器总是会截短 HTML 页面中的空格。如果您在文本中写 10 个空格，在显示该页面之前，浏览器会删除它们中的 9 个。如需在页面中增加空格的数量，您需要使用 `&nbsp;`字符实体。
+浏览器总是会截短 HTML 页面中的空格。如果您在文本中写 10 个空格，在显示该页面之前，浏览器会删除它们中的 9 个。如需在页面中增加空格的数量，可以用以下转义字符分隔字符
+
+`&nbsp;` , `&ensp;` , `&emsp;` , `&thinsp;` , `&zwnj;` ,`&zwj;`
+
+**1.`&nbsp;`**
+
+`&nbsp;`的宽度，可运行于所有主流浏览器。其他几种空格（ `&ensp;` , `&emsp;` , `&thinsp;` , `&zwnj;` ,`&zwj;`）在不同浏览器中宽度各异。
+
+`&nbsp;`  受font-size影响, 受letter-spacing和word-spacing影响;
+另外5个,受font-size影响, 不受letter-spacing和word-spacing影响;
+
+`&nbsp;` 不换行空格,默认四分之一em
+全称No-Break Space，它是最常见和我们使用最多的空格，大多数的人可能只接触了&nbsp;，它是按下space键产生的空格。在HTML中，如果你用空格键产生此空格，空格是不会累加的（只算1个）。要使用html实体表示才可累加，该空格占据宽度受字体影响明显而强烈。
+`&nbsp;`受css的word-spacing和letter-spacing控制, 其它不受;
+`&nbsp;`等效Unicode的不间断空格: 十六进制写法`&#xA0;` , 十进制写法`&#160`;
+
+**2.`&ensp;`**
+
+`&ensp;` 半角空格,半个em
+全称是En Space，en是字体排印学的计量单位，为em宽度的一半。根据定义，它等同于字体度的一半（如16px字体中就是8px）。名义上是小写字母n的宽度。
+此空格传承空格家族一贯的特性：透明的，
+此空格有个相当稳健的特性，就是其 占据的宽度正好是1/2个中文宽度，而且基本上不受字体影响。
+受font-size影响, 不受letter-spacing和word-spacing影响;
+
+**3.`&emsp;`**
+
+`&emsp;` 全角空格,一个em
+全称是Em Space，em是字体排印学的计量单位，相当于当前指定的点数。例如，1 em在16px的字体中就是16px。
+此空格也传承空格家族一贯的特性：透明的，
+此空格也有个相当稳健的特性，就是其 占据的宽度正好是1个中文宽度，而且基本上不受字体影响。
+受font-size影响, 不受letter-spacing和word-spacing影响;
+
+**4.`&thinsp;`** 
+
+`&thinsp;` 窄空格符,瘦弱空格符,六分之一em
+全称是Thin Space。瘦弱空格，就是该空格长得比较瘦弱，身体单薄，占据的宽度比较小。它是em之六分之一宽。
+受font-size影响, 不受letter-spacing和word-spacing影响
+
+**5.`&zwnj;`**‌
+
+`&zwnj;`‌零宽不连字符
+全称是Zero Width Non Joiner，是一个不打印字符，放在电子文本的两个字符之间，抑制本来会发生的连字，而是以这两个字符原本的字形来绘制。Unicode中的零宽不连字字符映射为“”（zero width non-joiner，U+200C），HTML字符值引用为： ‌
+受font-size影响, 不受letter-spacing和word-spacing影响;
+
+**6.`&zwj;`**
+
+`&zwj;` 零宽连字符
+全称是Zero Width Joiner，是一个不打印字符，放在某些需要复杂排版语言（如阿拉伯语、印地语）的两个字符之间，使得这两个本不会发生连字的字符产生了连字效果。零宽连字符的Unicode码位是U+200D 。
+受font-size影响, 不受letter-spacing和word-spacing影响;
+
+
+
 
 ### 结合音标符
 
@@ -1630,7 +1697,7 @@ p
 
 注释是用来解释你的代码，并且可以随意编辑它，浏览器会忽略它。
 
-CSS注释以 **/\*** 开始, 以 ***/** 结束, 实例如下:
+CSS注释以 **/*** 开始, 以 ***/** 结束, 实例如下:
 
 ```css
 /*这是个注释*/
@@ -1741,11 +1808,23 @@ body {background-image:url("images/back40.gif");}
 </head>
 ```
 
-### 内联样式
+### 行内样式表
+
+> 也叫做内联样式
 
 由于要将表现和内容混杂在一起，内联样式会损失掉样式表的许多优势。请慎用这种方法，例如当样式仅需要在一个元素上应用一次时。
 
 要使用内联样式，你需要在相关的标签内使用样式（style）属性。Style 属性可以包含任何 CSS 属性。本例展示如何改变段落的颜色和左外边距：
+
+```css
+<p style="color:sienna;margin-left:20px">这是一个段落。</p>
+```
+
+### 多重样式
+
+如果某些属性在不同的样式表中被同样的选择器定义，那么属性值将从更具体的样式表中被继承过来。 
+
+例如，外部样式表拥有针对 h3 选择器的三个属性：
 
 ```css
 h3
@@ -1782,7 +1861,7 @@ font-size:20pt;
 
 一般情况下，优先级如下：
 
-**（内联样式）Inline style > （内部样式）Internal style sheet >（外部样式）External style sheet > 浏览器默认样式**
+**（内联样式）`Inline style` > （内部样式）`Internal style sheet` >（外部样式）`External style sheet` > 浏览器默认样式**
 
 **注意**：如果外部样式放在内部样式的后面，则外部样式将覆盖内部样式。
 
@@ -2025,21 +2104,21 @@ p {text-indent:50px;}
 
 ### --CSS 文本属性
 
-| 属性            | 描述                     |
-| :-------------- | :----------------------- |
-| color           | 设置文本颜色             |
-| direction       | 设置文本方向             |
-| letter-spacing  | 设置字符间距             |
-| line-height     | 设置行高                 |
-| text-align      | 对齐元素中的文本         |
-| text-decoration | 向文本添加修饰           |
-| text-indent     | 缩进元素中文本的首行     |
-| text-shadow     | 设置文本阴影             |
-| text-transform  | 控制元素中的字母         |
-| unicode-bidi    | 设置或返回文本是否被重写 |
-| vertical-align  | 设置元素的垂直对齐       |
-| white-space     | 设置元素中空白的处理方式 |
-| word-spacing    | 设置字间距               |
+| 属性                    | 描述                     |
+| :---------------------- | :----------------------- |
+| color                   | 设置文本颜色             |
+| direction               | 设置文本方向             |
+| letter-spacing          | 设置字符间距             |
+| line-height(类似行间距) | 设置行高                 |
+| text-align              | 对齐元素中的文本         |
+| text-decoration         | 向文本添加修饰           |
+| text-indent             | 缩进元素中文本的首行     |
+| text-shadow             | 设置文本阴影             |
+| text-transform          | 控制元素中的字母         |
+| unicode-bidi            | 设置或返回文本是否被重写 |
+| vertical-align          | 设置元素的垂直对齐       |
+| white-space             | 设置元素中空白的处理方式 |
+| word-spacing            | 设置字间距               |
 
 ## 6.CSS 字体
 
@@ -2164,8 +2243,6 @@ p {font-size:0.875em;}
 ## 7.CSS 链接
 
 不同的链接可以有不同的样式。
-
-------
 
 ### 链接样式
 
@@ -2585,8 +2662,6 @@ border-style属性可以有1-4个值：
   - 四面边框是 dotted
 
 上面的例子用了border-style。然而，它也可以和border-width 、 border-color一起使用。
-
-------
 
 ### 边框-简写属性
 
@@ -3182,3 +3257,253 @@ clear 属性指定元素两侧不能出现浮动元素。
 | :---- | :--------------------------------- | :------------------------------------- | :--- |
 | clear | 指定不允许元素周围有浮动元素。     | `left` `right` `both` `none` `inherit` | 1    |
 | float | 指定一个盒子（元素）是否可以浮动。 | `left` `right` `none` `inherit`        | 1    |
+
+## 21.CSS对齐
+
+### 元素居中对齐
+
+要水平居中对齐一个元素(如 `<div>`), 可以使用 **`margin: auto;`**。
+
+设置到元素的宽度将防止它溢出到容器的边缘。
+
+元素通过指定宽度，并将两边的空外边距平均分配：
+
+```css
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+```
+
+**注意**： 如果没有设置 **width** 属性(或者设置 100%)，居中对齐将不起作用。
+
+### 文本居中对齐
+
+如果仅仅是为了文本在元素内居中对齐，可以使用 **`text-align: center;`**
+
+```css
+.center {
+    text-align: center;
+    border: 3px solid green;
+}
+```
+
+### 图片居中对齐
+
+要让图片居中对齐, 可以使用 **`margin: auto;`** 并将它放到 **`块`** 元素中:
+
+```css
+img {
+    display: block;
+    margin: auto;
+    width: 40%;
+}
+```
+
+### 左右对齐 - 使用定位方式
+
+我们可以使用 **`position: absolute;`** 属性来对齐元素:
+
+```css
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+```
+
+注释：绝对定位元素会被从正常流中删除，并且能够交叠元素。
+
+**提示**： 当使用 **`position`** 来对齐元素时, 通常 **`<body>`** 元素会设置 **`margin`** 和 **`padding`** 。 这样可以避免在不同的浏览器中出现可见的差异。
+
+当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 `<div class="container">`）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明：
+
+```css
+body {
+    margin: 0;
+    padding: 0;
+}
+ 
+.container {
+    position: relative;
+    width: 100%;
+}
+ 
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    background-color: #b0e0e6;
+}
+```
+
+### 左右对齐 - 使用 float 方式
+
+我们也可以使用 **`float`** 属性来对齐元素:
+
+```css
+.right {
+    float: right;
+    width: 300px;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+```
+
+当像这样对齐元素时，对 `<body>` 元素的外边距和内边距进行预定义是一个好主意。这样可以避免在不同的浏览器中出现可见的差异。
+
+> 注意：如果子元素的高度大于父元素，且子元素设置了浮动，那么子元素将溢出，这时候你可以使用 "**clearfix**(清除浮动)" 来解决该问题。
+
+我们可以在父元素上添加 overflow: auto; 来解决子元素溢出的问题:
+
+```css
+.clearfix {
+    overflow: auto;
+}
+```
+
+当使用 float 属性时，IE8 以及更早的版本存在一个问题。如果省略 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 float 属性时，请始终设置 !DOCTYPE 声明：
+
+```css
+body {
+    margin: 0;
+    padding: 0;
+}
+ 
+.right {
+    float: right;
+    width: 300px;
+    background-color: #b0e0e6;
+}
+```
+
+### 垂直居中对齐 - 使用 padding
+
+CSS 中有很多方式可以实现垂直居中对齐。 一个简单的方式就是头部顶部使用 **`padding`**:
+
+```css
+.center {
+    padding: 70px 0;
+    border: 3px solid green;
+}
+```
+
+如果要水平和垂直都居中，可以使用 **`padding`** 和 **`text-align: center`**:
+
+```css
+.center {
+    padding: 70px 0;
+    border: 3px solid green;
+    text-align: center;
+}
+```
+
+### 垂直居中 - 使用 line-height
+
+```css
+.center {
+    line-height: 200px;
+    height: 200px;
+    border: 3px solid green;
+    text-align: center;
+}
+ 
+/* 如果文本有多行，添加以下代码: */
+.center p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+}
+```
+
+### 垂直居中 - 使用 position 和 transform
+
+除了使用 **`padding`** 和 **`line-height`** 属性外,我们还可以使用 **`transform`** 属性来设置垂直居中:
+
+```css
+.center { 
+    height: 200px;
+    position: relative;
+    border: 3px solid green; 
+}
+ 
+.center p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+```
+
+## 22.CSS 组合选择符
+
+> 组合选择符说明了两个选择器之间的关系。
+
+CSS组合选择符包括各种简单选择符的组合方式。
+
+在 CSS3 中包含了四种组合方式:
+
+- 后代选择器(以空格 ` ` 分隔)
+- 子元素选择器(以大于 **`>`** 号分隔）
+- 相邻兄弟选择器（以加号 **`+`** 分隔）
+- 普通兄弟选择器（以波浪号 **`～`** 分隔）
+
+### 后代选择器
+
+后代选择器用于选取某元素的后代元素。
+
+以下实例选取所有 `<p>` 元素插入到 `<div>` 元素中: 
+
+```css
+div p
+{
+  background-color:yellow;
+}
+```
+
+### 子元素选择器
+
+与后代选择器相比，子元素选择器（Child selectors）只能选择作为某元素直接/一级子元素的元素。
+
+以下实例选择了`<div>`元素中所有直接子元素 `<p>` ：
+
+```css
+div>p
+{
+  background-color:yellow;
+}
+```
+
+### 相邻兄弟选择器
+
+相邻兄弟选择器（Adjacent sibling selector）可选择紧接在另一元素后的元素，且二者有相同父元素。
+
+如果需要选择紧接在另一个元素后的元素，而且二者有相同的父元素，可以使用相邻兄弟选择器（Adjacent sibling selector）。
+
+以下实例选取了所有位于 `<div>` 元素后的第一个 `<p>` 元素:
+
+```css
+div+p
+{
+  background-color:yellow;
+}
+```
+
+### 后续兄弟选择器
+
+后续兄弟选择器选取所有指定元素之后的相邻兄弟元素。
+
+以下实例选取了所有 `<div>` 元素之后的所有相邻兄弟元素 `<p>` :
+
+```css
+div~p
+{
+  background-color:yellow;
+}
+```
+

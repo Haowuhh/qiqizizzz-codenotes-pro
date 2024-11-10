@@ -1922,3 +1922,72 @@ ListIterator<String> it2=list.listIterator();
         }
 ```
 
+## 4.泛型
+
+> 泛型的细节
+>
+> - 泛型中不能写基本数据类型
+> - 指定泛型的具体类型后，传递数据时，可以传入该类类型或者其子类类型
+> - 如果不写泛型，类型默认是Object
+
+**1.泛型方法**
+方法中形参类型不确定时，可以使用类名后面定义的泛型`<E>`
+
+```java
+public class MyArrayList {
+	public <E> boolean add(E e){
+	obj[size]=e;
+	size++;
+	return true;
+}
+```
+
+**2.泛型接口**
+
+```java
+//格式
+修饰符 interface 接口名<类型>{
+	
+}
+//举例
+public interface List<E>{
+    
+}
+```
+
+**3.泛型类**
+
+```java
+//格式
+修饰符 class 类名<类型>{
+    
+}
+//举例
+public class ArrayList<E>{
+    
+}
+```
+
+## 5.Set系列集合
+
+> Set、LinkedHashSet
+
+```java
+Set<Integer> s=new HashSet<>();
+LinkedHashSet<Integer> s2=new LinkedHashSet<>();
+```
+
+## 6.双列集合顶层接口Map
+
+Map是双列集合的顶层接口，它的功能是全部双列集合都可以继承使用的
+
+| 方法名称                            | 说明                                 |
+| ----------------------------------- | ------------------------------------ |
+| V put(K key,V value)                | 添加元素                             |
+| V remove(obiect key)                | 根据键删除键值对元素                 |
+| void clear()                        | 移除所有的键值对元素                 |
+| boolean containsKey(object key)     | 判断集合是否包含指定的键             |
+| boolean containsValue(Obiect value) | 判断集合是否包含指定的值             |
+| boolean isEmpty()                   | 判断集合是否为空                     |
+| int size()                          | 集合的长度，也就是集合中键值对的个数 |
+
