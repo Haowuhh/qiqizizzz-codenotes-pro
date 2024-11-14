@@ -296,13 +296,13 @@ TRUNCATE TABLE 表名;
 **1.给指定字段添加数据**
 
 ```mysql
-INSERT INTO 表名(字段名1,字段名2,...)VALUES(值1,值2,...)；
+INSERT INTO 表名(字段名1,字段名2,...)VALUES(值1,值2,...);
 ```
 
 **2.给全部字段添加数据**
 
 ```mysql
-INSERT INTO 表名 VALUES(值1,值2，...)；
+INSERT INTO 表名 VALUES(值1,值2，...);
 ```
 
 **3.批量添加数据**
@@ -334,7 +334,7 @@ UPDATE 表名 SET 字段名1=值1,字段名2=值2,....[WHERE 条件];
 **2.删除数据**
 
 ```mysql
-DELETE FROM 表名 [WHERE 条件]；
+DELETE FROM 表名 [WHERE 条件];
 ```
 
 **注意：**
@@ -422,7 +422,10 @@ SELECT 聚合函数(字段列表) FROM 表名;
 **1.语法**
 
 ```mysql
-SELECT 字段列表 FROM 表名 [WHERE 条件] GROUP BY 分组字段名 [HAVING分组后过滤条件];
+SELECT 字段列表 FROM 表名 [WHERE 条件] GROUP BY 分组字段名 [HAVING 分组后过滤条件];
+#分组字段名要和字段列表第一个字段相同，即根据job分组，查询平均工资
+#其中having后面的条件要和第二个字段列表进行使用来达到过滤的效果
+select job,avg(salary) as avg from emp where age>20 group by job having avg>=5000;
 ```
 
 **2.where与having区别**
@@ -437,6 +440,8 @@ SELECT 字段列表 FROM 表名 [WHERE 条件] GROUP BY 分组字段名 [HAVING�
 
 ```mysql
 SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1，字段2 排序方式2;
+#name，age作为一个标识，根据salary的降序来得到查询结果
+select name,salary,age from emp order by salary desc;
 ```
 
 **2.排序方式**
@@ -453,6 +458,8 @@ SELECT 字段列表 FROM 表名 ORDER BY 字段1 排序方式1，字段2 排序�
 
 ```mysql
 SELECT 字段列表 FROM 表名 LIMIT 起始索引,查询记录数;
+#2是起始索引，查询10条记录，最终查询到的记录是第3~12条的name，salary，age
+select name,salary,age from emp limit 2,10;
 ```
 
 注意
@@ -849,6 +856,8 @@ SELECT 字段列表 FROM 表1,表2 WHERE 条件...;
 
 ```mysql
 SELECT 字段列表 FROM 表1[INNER] JOIN 表2 ON 连接条件...;
+#emp和dept是两张表,d是dept的别名
+select emp.name,emp.job as 'job' from emp join dept d on emp.dept_id = d.id;
 ```
 
 内连接查询的是两张表交集的部分。
@@ -861,11 +870,15 @@ SELECT 字段列表 FROM 表1[INNER] JOIN 表2 ON 连接条件...;
 
 - 左外连接
 
+> 左连接又称左外连接，我们查询两张表时，会将左表所有数据都查出来，而右表数据只展示和左表有匹配的数据（如左表id和右边id有相等的数据），如果没有匹配上（如左表有id=4 ，但是右表没有id等于4的数据时）右表对应行就展示为Null。
+
 ```mysql
-SELECT 字段列表 FROM 表1 LEFT [OUTER] JOIN 表2 ON条件....;
+SELECT 字段列表 FROM 表1 LEFT [OUTER] JOIN 表2 ON 条件....;
 ```
 
 - 右外连接
+
+> 右连接也称为右外连接，我们查询两张表时，会将右表所有数据都查出来，而左表数据只展示和右表有匹配的数据，如果没有匹配上左表的对应行就展示为Null。
 
 ```mysql
 SELECT 字段列表 FROM 表1 RIGHT [OUTER] JOIN 表2 ON 条件....;
@@ -1180,7 +1193,7 @@ MySQL客户端连接成功后，通过show [sessionlglobal status 命令可以�
 INSERT、UPDATE、DELETE、SELECT的访问频次:
 
 ```mysql
-SHOW GLOBAL STATUS LIKE 'Com____';
+SHOW GLOBAL STATUS LIKE 'Com%';
 ```
 
 **2.慢查询日志**
@@ -1417,3 +1430,144 @@ create unique index idx_phone_name on tb_user(phone, name);
 5. 尽量使用联合索引，减少单列索引，查询时，联合索引很多时候可以覆盖索引，节省存储空间，避免回表，提高查询效率。
 6. 要控制索引的数量，索引并不是多多益善，索引越多，维护索引结构的代价也就越大，会影响增删改的效率。
 7. 如果索引列不能存储NULL值，请在创建表时使用NOT NULL约束它。当优化器知道每列是否包含NULL值时，它可以更好地确定哪个索引最有效地用于查询。
+
+## 3.SQL优化
+
+### **1.插入数据-insert优化**
+
+> 批量插入
+
+```mysql
+Insert into tb test values(1,'Tom'),(2,'Cat'),(3, jerry');
+```
+
+> 手动提交事务
+
+```mysql
+start transaction;
+insert into tb_ test values(1,'Tom'),(2,' Cat'),(3, jerr')
+insert into tb test values(4,'Tom'),(5,'cat'),(6,erry')
+insert into tb test values(7,'Tom'),8,'Cat'),(9,erry')
+commit;
+```
+
+> 主键顺序插入
+
+```mysql
+主键乱序插入:8 1 9 21 88 2 4 15 89 5 7 3
+主键顺序插入:1 2 3 4 5 7 8 9 15 21 88 89
+```
+
+> 大批量插入数据
+
+如果一次性需要插入大批量数据，使用insert语句插入性能较低，此时可以使用MySQL数据库提供的load指令进行插入。操作如下:
+
+```mysql
+#客户端连接服务端时，加上参数 --local-infile
+mysql--local-infile -u root -p
+#设置全局参数local_infile为1，开启从本地加载文件导入数据的开关
+set global local_infile=1;
+#执行load指令将准备好的数据，加载到表结构中
+load data local infile '/root/sql.log' into table 'tb user' fields terminated by ',’ lines terminated by '\n';
+```
+
+### 2.主键优化
+
+主键设计原则
+
+- 满足业务需求的情况下，尽量降低主键的长度。
+- 
+  插入数据时，尽量选择顺序插入，选择使用AUTO_INCREMENT自增主键，
+
+- 尽量不要使用UUID做主键或者是其他自然主键，如身份证号。
+
+- 业务操作时，避免对主键的修改。
+
+### 3.order by优化
+
+①.Using filesort:通过表的索引或全表扫描，读取满足条件的数据行，然后在排序缓冲区sort buffer中完成排序操作，所有不是通过索引直
+接返回排序结果的排序都叫 FileSort 排序。
+②.Using index:通过有序索引顺序扫描直接返回有序数据，这种情况即为using index，不需要额外排序，操作效率高。
+
+```mysql
+#没有创建索引时，根据age,phone进行排序。
+explain select id,age,phone from tb_user order by age,phone;
+#创建索引
+create index idx_user_age_phone_aa on tb_user(age,phone);
+#创建索引后，根据age,phone进行升序排序
+explain select id,age,phone from tb_user order by age,phone;
+#创建索引后，根据age,phone进行降序排序
+explain select id,age,phone from tb_user order by age desc,phone desc;
+```
+
+- 根据排序字段建立合适的索引，多字段排序时，也遵循最左前缀法则。
+- 尽量使用覆盖索引。
+- 多字段排序,一个升序一个降序，此时需要注意联合索引在创建时的规则(ASC/DESC)。
+- 如果不可避免的出现filesort，大数据量排序时，可以适当增大排序缓冲区大小sort_buffer_size(默认256k).
+
+### **4.group by优化**
+
+```mysql
+#删除掉目前的联合索引idx_user_pro_age_sta
+drop index idx_use_pro_age_sta on tb_user;
+#执行分组操作，根据profession字段分组
+explain select profession,count(*) from tb_user group by profession;
+#创建索引
+Create index idx_user_pro_age_sta on tb_user(profession,age,status);
+#执行分组操作，根据profession字段分组
+explain select profession,count(*) from tb_user group by profession;
+#执行分组操作，根据profession字段分组
+explain select profession,count(*)from tb_user group by profession,age;
+```
+
+- 在分组操作时，可以通过索引来提高效率，
+- 分组操作时，索引的使用也是满足最左前缀法则的。
+
+### 4.count优化
+
+count的几种用法：
+
+- count(主键)
+
+  InnoD8 引擎会遍历整张表，把每一行的主键id值都取出来，返回给服务层。服务层拿到主键后，直接按行进行累加(主键不可能为null)。
+
+- count(字段)
+
+  没有not null约束:InnoD8 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，服务层判断是否为null，不为null，计数累加。
+
+  有not null 约束:InnoDB 引擎会遍历整张表把每一行的字段值都取出来，返回给服务层，直接按行进行累加。
+
+- count(1)
+
+  InnoDB 引擎遍历整张表，但不取值。服务层对于返回的每一行，放一个数字“1”进去，直接按行进行累加。
+
+- count(*)
+
+  InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加。
+
+  
+
+`按照效率排序的话，count(字段)<count(主键 id)<count(1)≈count(*)，所以尽量使用 count(*)。`
+
+### 5.limit优化
+
+一个常见又非常头疼的问题就是limit 2000000,10 ，此时需要MYSQL排序前2000010 记录，仅仅返回2000000-2000010
+的记录，其他记录丢弃，查询排序的代价非常大。
+
+优化思路:一般分页查询时，通过创建 覆盖索引 能够比较好地提高性能，可以通过覆盖索引加子查询形式进行优化。
+
+```mysql
+explain select * from tb_sku t,(select id from tb_sku order by id limit 2000000,10) a where t.id = a.id;
+```
+
+### 6.update优化
+
+```mysql
+update student set no='2000100100'where id =1;
+```
+
+```mysql
+update student set no='2000100105'where name='韦一笑';
+```
+
+InnoDB的行锁是针对索引加的锁，不是针对记录加的锁,并且该索引不能失效，否则会从行锁升级为表锁。
