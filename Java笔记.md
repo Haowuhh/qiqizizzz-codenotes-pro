@@ -1855,6 +1855,17 @@ lterator中的常用方法
 
 3，迭代器遍历时，不能用集合的方法(add方法等)进行增加或者删除
 
+```java
+Collection<String> coll=new ArrayList<>();
+coll.add("aaa");
+Interator<String> it=coll.iterator();    //使用迭代器
+while(it.hasNext())
+{
+	String a=it.next();
+	System.out.println(a);
+}
+```
+
 
 
 ### 2.增强for遍历--foreach
@@ -1977,6 +1988,8 @@ Set<Integer> s=new HashSet<>();
 LinkedHashSet<Integer> s2=new LinkedHashSet<>();
 ```
 
+
+
 ## 6.双列集合顶层接口Map
 
 Map是双列集合的顶层接口，它的功能是全部双列集合都可以继承使用的
@@ -1990,4 +2003,154 @@ Map是双列集合的顶层接口，它的功能是全部双列集合都可以�
 | boolean containsValue(Obiect value) | 判断集合是否包含指定的值             |
 | boolean isEmpty()                   | 判断集合是否为空                     |
 | int size()                          | 集合的长度，也就是集合中键值对的个数 |
+
+### 6.1 遍历方式
+
+**1.键找值--增强for循环**
+
+方法KeySet()：获得所有的键。
+
+方法get()：获得键所对应的值。
+
+```java
+Map<String,String> m=new HashMap<>();
+        m.put("qiqi", "77");
+        m.put("java", "lg");
+        m.put("c++", "sz");
+        Set<String> keys=m.keySet();     //得到所有的键
+
+//增强for循环--1       
+for(String key:keys)
+        {
+            String value=m.get(key);
+            System.out.println(key+"="+value);
+        }
+//Iterator迭代器--2
+Iterator<String> it=keys.iterator();
+        while(it.hasNext())
+        {
+            String key=it.next();
+            String value=m.get(key);
+            System.out.println(key+"="+value);
+        }
+//lambda表达式方法遍历--3
+m.forEach((key,value)->{System.out.println(key+"="+value);
+```
+
+**2.键值对--迭代器/lambda表达式**
+
+方法entrySet()：其主要作用是返回了一个`Set<Map.Entry<K,V>>`类型的集合，即创建一个对象使`entrySet `**不为`null`**
+
+```java
+Map<String,String> m=new HashMap<>();
+        m.put("qiqi", "77");
+        m.put("java", "lg");
+        m.put("c++", "sz");
+//键值对方法--
+//m.entrySet()返回一个空Set
+        Set<Map.Entry<String,String>> set=m.entrySet();
+
+//Iterator迭代器--1    
+		Iterator<Map.Entry<String,String>> it=set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,String> entry=it.next();
+            System.out.println(entry.getKey()+"="+entry.getValue());
+//增强for循环--2
+        for(Entry<String, String> map:set)
+        {
+            System.out.println(map);
+        }
+//lambda表达式进行遍历--3
+         m.forEach((key,value)->{System.out.println(key+" "+value);});
+```
+
+### 6.2 HashMap
+
+HashMap的特点
+
+1.HashMap是Map里面的一个实现类。
+
+2.没有额外需要学习的特有方法，直接使用Map里面的方法就可以了。
+
+3.特点都是由键决定的:**无序**、不重复、无索引。
+
+4.HashMap跟Hashset底层原理是一模一样的，都是哈希表结构。
+
+5.如果键存储的是自定义对象，需要重写hashcode和equals方法。
+
+如果值存储自定义对象，不需要重写hashcode和equals方法
+
+### 6.3 LinkedHashMap
+
+由键决定:**有序**、不重复、无索引。
+
+这里的有序指的是保证存储和取出的元素顺序一致。
+
+原理:底层数据结构是依然哈希表，只是每个键值对元素又额外的多了一个双链表的机制记录存储的顺序。
+
+# 六、Stream流
+
+## 1.使用方式
+
+| 获取方式     | 方法名                                          | 说明                     |
+| ------------ | ----------------------------------------------- | ------------------------ |
+| 单列集合     | `default Stream<E> stream()`                    | Collection中的默认方法   |
+| 双列集合     | 无(需要通过keySet和EntrySet中转一下)            | 无法直接使用stream流     |
+| 数组         | `public static <T> Stream<T> stream(T[] array)` | Arrays工具类中的静态方法 |
+| 一堆零散数据 | `public static<T> Stream<T> of(T...values)`     | Stream接口中的静态方法   |
+
+**1.单列集合**
+
+> 用stream()方法
+
+```java
+ArrayList<String> list=new ArrayList<>();
+Collections.addAll(list, "a","b","c");
+list.stream().forEach(s->System.out.println(s));
+```
+
+**2.双列集合**
+
+```java
+HashMap<String,Integer> hm=new HashMap<>();
+hm.put("aaa",111);
+hm.put("bbb",222);
+hm.put("ccc",333);
+hm.put("ddd",444);
+//第一种获取stream流
+//hm.keySet().stream().forEach(s->System.out.println(s));
+//第二种获取stream流
+hm.entrySet().stream().forEach(s->System.out.println(s));
+```
+
+**3.数组**
+
+```java
+int[] arr={1,2,3,4,5,6,7};
+Arrays.stream(arr).forEach(s->System.out.println(s));
+```
+
+**4.一堆零散数据**
+
+```java
+int[] arr1={1,2,3,4,5,6,7};
+String[] arr2={"a","b","c"};
+Stream.of(arr1).forEach(s->System.out.println(s));       //打印arr1的地址
+Stream.of(arr2).forEach(s->System.out.println(s));       //正常打印
+```
+
+of方法的形参是一个可变参数，可以传递一些零散的数据，也可以传递数组。
+
+但是数组里面的数据必须是引用数据类型(比如字符串`“awa”`)的，如果传递基本数据类型，则会把整个数组当作一个元素，放到Stream中。
+
+## 2.中间方法
+
+| 名称                                               | 说明                                 |
+| -------------------------------------------------- | ------------------------------------ |
+| `Stream<T> filter(Predicate<? super T> predicate)` | 过滤                                 |
+| `Stream<T> limit(long maxSize)`                    | 获取前几个元素                       |
+| `Stream<T> skip(long n)`                           | 跳过前几个元素                       |
+| `Stream<T> distinct()`                             | 元素去重，依赖(hashcode和equals方法) |
+| `static<T>Stream<T>concat(Stream a, Stream b)`     | 合并a和b两个流为一个流               |
+| `Stream<R> map(Function<T ,R> mapper)`             | 转换流中的数据类型                   |
 

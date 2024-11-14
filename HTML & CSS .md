@@ -3575,3 +3575,612 @@ div~p
 }
 ```
 
+## 23.CSS 伪类
+
+CSS伪类是用来添加一些选择器的特殊效果。
+
+**1.语法**
+
+伪类的语法：
+
+```css
+selector:pseudo-class {property:value;}
+```
+
+CSS类也可以使用伪类：
+
+```css
+selector.class:pseudo-class {property:value;}
+```
+
+**2.anchor伪类**
+
+在支持 CSS 的浏览器中，链接的不同状态都可以以不同的方式显示
+
+```css
+a:link {color:#FF0000;} /* 未访问的链接 */
+a:visited {color:#00FF00;} /* 已访问的链接 */
+a:hover {color:#FF00FF;} /* 鼠标划过链接 */
+a:active {color:#0000FF;} /* 已选中的链接 */
+```
+
+**注意**： 在CSS定义中，a:hover 必须被置于 a:link 和 a:visited 之后，才是有效的。
+
+**注意**： 在 CSS 定义中，a:active 必须被置于 a:hover 之后，才是有效的。
+
+**注意**：伪类的名称不区分大小写。
+
+**3.伪类和CSS类**
+
+伪类可以与 CSS 类配合使用：
+
+```css
+a.red:visited {color:#FF0000;}
+ 
+<a class="red" href="css-syntax.html">CSS 语法</a>
+```
+
+如果在上面的例子的链接已被访问，它会显示为红色。
+
+**4.CSS :first-child 伪类**
+
+您可以使用 :first-child 伪类来选择父元素的第一个子元素。
+
+**注意**：在IE8的之前版本必须声明`<!DOCTYPE>` ，这样 :first-child 才能生效。
+
+> **4.1 匹配第一个` <p>` 元素**
+
+在下面的例子中，选择器匹配作为任何元素的第一个子元素的 `<p>` 元素：
+
+```css
+p:first-child
+{
+    color:blue;
+}
+```
+
+> **4.2 匹配所有`<p>` 元素中的第一个 `<i>` 元素**
+
+在下面的例子中，选择相匹配的所有`<p>`元素的第一个 `<i>` 元素：
+
+```css
+p > i:first-child
+{
+    color:blue;
+}
+```
+
+> **4.3 匹配所有作为第一个子元素的 `<p>` 元素中的所有 `<i>` 元素**
+
+在下面的例子中，选择器匹配所有作为元素的第一个子元素的 `<p>` 元素中的所有 `<i>` 元素：
+
+```css
+p:first-child i
+{
+    color:blue;
+}
+```
+
+**5.CSS - :lang 伪类**
+
+:lang 伪类使你有能力为不同的语言定义特殊的规则
+
+**注意：**IE8必须声明`<!DOCTYPE>`才能支持;lang伪类。
+
+在下面的例子中，:lang 类为属性值为 no 的q元素定义引号的类型：
+
+```css
+q:lang(no) {quotes: "~" "~";}
+```
+
+### --CSS 伪类/元素
+
+| 选择器               | 示例                  | 示例说明                                        |
+| :------------------- | :-------------------- | :---------------------------------------------- |
+| :checked             | input:checked         | 选择所有选中的表单元素                          |
+| :disabled            | input:disabled        | 选择所有禁用的表单元素                          |
+| :empty               | p:empty               | 选择所有没有子元素的p元素                       |
+| :enabled             | input:enabled         | 选择所有启用的表单元素                          |
+| :first-of-type       | p:first-of-type       | 选择的每个 p 元素是其父元素的第一个 p 元素      |
+| :in-range            | input:in-range        | 选择元素指定范围内的值                          |
+| :invalid             | input:invalid         | 选择所有无效的元素                              |
+| :last-child          | p:last-child          | 选择所有p元素的最后一个子元素                   |
+| :last-of-type        | p:last-of-type        | 选择每个p元素是其母元素的最后一个p元素          |
+| :not(selector)       | :not(p)               | 选择所有p以外的元素                             |
+| :nth-child(n)        | p:nth-child(2)        | 选择所有 p 元素的父元素的第二个子元素           |
+| :nth-last-child(n)   | p:nth-last-child(2)   | 选择所有p元素倒数的第二个子元素                 |
+| :nth-last-of-type(n) | p:nth-last-of-type(2) | 选择所有p元素倒数的第二个为p的子元素            |
+| :nth-of-type(n)      | p:nth-of-type(2)      | 选择所有p元素第二个为p的子元素                  |
+| :only-of-type        | p:only-of-type        | 选择所有仅有一个子元素为p的元素                 |
+| :only-child          | p:only-child          | 选择所有仅有一个子元素的p元素                   |
+| :optional            | input:optional        | 选择没有"required"的元素属性                    |
+| :out-of-range        | input:out-of-range    | 选择指定范围以外的值的元素属性                  |
+| :read-only           | input:read-only       | 选择只读属性的元素属性                          |
+| :read-write          | input:read-write      | 选择没有只读属性的元素属性                      |
+| :required            | input:required        | 选择有"required"属性指定的元素属性              |
+| :root                | root                  | 选择文档的根元素                                |
+| :target              | #news:target          | 选择当前活动#news元素(点击URL包含锚的名字)      |
+| :valid               | input:valid           | 选择所有有效值的属性                            |
+| :link                | a:link                | 选择所有未访问链接                              |
+| :visited             | a:visited             | 选择所有访问过的链接                            |
+| :active              | a:active              | 选择正在活动链接                                |
+| :hover               | a:hover               | 把鼠标放在链接上的状态                          |
+| :focus               | input:focus           | 选择元素输入后具有焦点                          |
+| :first-letter        | p:first-letter        | 选择每个<p> 元素的第一个字母                    |
+| :first-line          | p:first-line          | 选择每个<p> 元素的第一行                        |
+| :first-child         | p:first-child         | 选择器匹配属于任意元素的第一个子元素的 <p> 元素 |
+| :before              | p:before              | 在每个<p>元素之前插入内容                       |
+| :after               | p:after               | 在每个<p>元素之后插入内容                       |
+| :lang(*language*)    | p:lang(it)            | 为<p>元素的lang属性选择一个开始值               |
+
+## 24.CSS 伪元素
+
+CSS 伪元素是一种特殊的选择器，它可以在不改变 HTML 结构的情况下对页面元素的特定部分进行样式设置。
+
+CSS 伪元素是用来添加一些选择器的特殊效果。
+
+常用的 CSS 伪元素有 `::before`、`::after`、`::first-line`、`::first-letter` 等。
+
+**1.语法**
+
+伪元素的语法：
+
+```css
+selector::pseudo-element {
+    property: value;
+}
+```
+
+CSS 类也可以使用伪元素：
+
+```css
+selector.class::pseudo-element {
+    property: value;
+}
+```
+
+**2.:first-line 伪元素**
+
+"first-line" 伪元素用于向文本的首行设置特殊样式。
+
+在下面的例子中，浏览器会根据 "first-line" 伪元素中的样式对 p 元素的第一行文本进行格式化：
+
+```css
+p:first-line 
+{
+    color:#ff0000;
+    font-variant:small-caps;
+}
+```
+
+**注意**："first-line" 伪元素只能用于块级元素。
+
+**注意**： 下面的属性可应用于 "first-line" 伪元素：
+
+- font properties
+- color properties 
+- background properties
+- word-spacing
+- letter-spacing
+- text-decoration
+- vertical-align
+- text-transform
+- line-height
+- clear
+
+**3.:first-letter 伪元素**
+
+"first-letter" 伪元素用于向文本的首字母设置特殊样式：
+
+```css
+p:first-letter 
+{
+    color:#ff0000;
+    font-size:xx-large;
+}
+```
+
+**注意**： "first-letter" 伪元素只能用于块级元素。
+
+**注意**： 下面的属性可应用于 "first-letter" 伪元素： 
+
+- font properties
+- color properties 
+- background properties
+- margin properties
+- padding properties
+- border properties
+- text-decoration
+- vertical-align (only if "float" is "none")
+- text-transform
+- line-height
+- float
+- clear
+
+**4.伪元素和CSS类**
+
+伪元素可以结合CSS类： 
+
+```css
+p.article:first-letter {color:#ff0000;}
+
+<p class="article">文章段落</p>
+```
+
+上面的例子会使所有 class 为 article 的段落的首字母变为红色。
+
+**5.多个伪元素**
+
+可以结合多个伪元素来使用。
+
+在下面的例子中，段落的第一个字母将显示为红色，其字体大小为 xx-large。第一行中的其余文本将为蓝色，并以小型大写字母显示。
+
+段落中的其余文本将以默认字体大小和颜色来显示：
+
+```css
+p:first-letter
+{
+    color:#ff0000;
+    font-size:xx-large;
+}
+p:first-line 
+{
+    color:#0000ff;
+    font-variant:small-caps;
+}
+```
+
+**6.CSS - :before 伪元素**
+
+":before" 伪元素可以在元素的内容前面插入新内容。
+
+下面的例子在每个 `<h1>`元素前面插入一幅图片：
+
+```css
+h1:before 
+{
+    content:url(smiley.gif);
+}
+```
+
+**7.CSS - :after 伪元素**
+
+":after" 伪元素可以在元素的内容之后插入新内容。
+
+下面的例子在每个 `<h1>` 元素后面插入一幅图片：
+
+```css
+h1:after
+{
+    content:url(smiley.gif);
+}
+```
+
+### --CSS伪类/元素
+
+| 选择器            | 示例           | 示例说明                                          |
+| :---------------- | :------------- | :------------------------------------------------ |
+| :link             | a:link         | 选择所有未访问链接                                |
+| :visited          | a:visited      | 选择所有访问过的链接                              |
+| :active           | a:active       | 选择正在活动链接                                  |
+| :hover            | a:hover        | 把鼠标放在链接上的状态                            |
+| :focus            | input:focus    | 选择元素输入后具有焦点                            |
+| :first-letter     | p:first-letter | 选择每个`<p>` 元素的第一个字母                    |
+| :first-line       | p:first-line   | 选择每个`<p>` 元素的第一行                        |
+| :first-child      | p:first-child  | 选择器匹配属于任意元素的第一个子元素的 `<p>` 元素 |
+| :before           | p:before       | 在每个`<p>`元素之前插入内容                       |
+| :after            | p:after        | 在每个`<p>`元素之后插入内容                       |
+| :lang(*language*) | p:lang(it)     | 为`<p>`元素的lang属性选择一个开始值               |
+
+## 25.CSS 导航栏
+
+熟练使用导航栏，对于任何网站都非常重要。
+
+使用CSS你可以转换成好看的导航栏而不是枯燥的HTML菜单。
+
+### 导航栏=链接列表
+
+作为标准的 HTML 基础一个导航栏是必须的。
+
+在我们的例子中我们将建立一个标准的 HTML 列表导航栏。
+
+导航条基本上是一个链接列表，所以使用 `<ul>` 和 `<li>`元素非常有意义：
+
+```css
+<ul>
+  <li><a href="#home">主页</a></li>
+  <li><a href="#news">新闻</a></li>
+  <li><a href="#contact">联系</a></li>
+  <li><a href="#about">关于</a></li>
+</ul>
+```
+
+现在，让我们从列表中删除边距和填充：
+
+```css
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+```
+
+例子解析：
+
+- list-style-type:none - 移除列表前小标志。一个导航栏并不需要列表标记
+- 移除浏览器的默认设置将边距和填充设置为0
+
+上面的例子中的代码是垂直和水平导航栏使用的标准代码。
+
+### 垂直导航栏
+
+上面的代码，我们只需要 `<a>`元素的样式，建立一个垂直的导航栏：
+
+```css
+a
+{
+    display:block;
+    width:60px;
+}
+```
+
+示例说明：
+
+- display:block - 显示块元素的链接，让整体变为可点击链接区域（不只是文本），它允许我们指定宽度
+- width:60px - 块元素默认情况下是最大宽度。我们要指定一个60像素的宽度
+
+**注意**: 请务必指定 `<a>`元素在垂直导航栏的的宽度。如果省略宽度，IE6可能产生意想不到的效果。
+
+> 实例：
+
+```css
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #f1f1f1;
+    height: 100%; /* 全屏高度 */
+    position: fixed; 
+    overflow: auto; /* 如果导航栏选项多，允许滚动 */
+}
+
+li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: #555;
+    color: white;
+}
+</style>
+```
+
+### 水平导航栏
+
+有两种方法创建横向导航栏。使用**内联(inline)**或**浮动(float)**的列表项。
+
+这两种方法都很好，但如果你想链接到具有相同的大小，你必须使用浮动的方法。
+
+**1.内联列表项**
+
+建立一个横向导航栏的方法之一是指定元素， 下述代码是标准的内联:
+
+```css
+li
+{
+    display:inline;
+}
+```
+
+实例解析：
+
+- display:inline; - 默认情况下，**`<li>`** 元素是块元素。在这里，我们删除换行符之前和之后每个列表项，以显示一行。
+
+**2.浮动列表项**
+
+在上面的例子中链接有不同的宽度。
+
+对于所有的链接宽度相等，浮动 `<li>`元素，并指定为 `<a>`元素的宽度：
+
+```css
+li
+{
+    float:left;
+}
+a
+{
+    display:block;
+    width:60px;
+}
+```
+
+实例解析：
+
+- float:left - 使用浮动块元素的幻灯片彼此相邻
+- display:block - 显示块元素的链接，让整体变为可点击链接区域（不只是文本），它允许我们指定宽度
+- width:60px - 块元素默认情况下是最大宽度。我们要指定一个60像素的宽度
+
+> 实例：
+
+```css
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+ 
+li {
+    float: left;
+}
+ 
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+ 
+/*鼠标移动到选项上修改背景颜色 */
+li a:hover {
+    background-color: #111;
+}
+```
+
+## 26.CSS 下拉菜单
+
+### 基本下拉菜单
+
+当鼠标移动到指定元素上时，会出现下拉菜单。
+
+```css
+<!DOCTYPE html>
+<html>
+<head>
+<title>QWQ</title>
+<meta charset="utf-8">
+<style>
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  padding: 12px 16px;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<h2>鼠标移动后出现下拉菜单</h2>
+<p>将鼠标移动到指定元素上就能看到下拉菜单。</p>
+
+<div class="dropdown">
+  <span>鼠标移动到我这！</span>
+  <div class="dropdown-content">
+    <p>柒柒子zzz</p>
+    <p>www.qiqizizzz.com</p>
+  </div>
+</div>
+
+</body>
+</html>
+```
+
+> ### 实例解析
+
+**HTML 部分：**
+
+我们可以使用任何的 HTML 元素来打开下拉菜单，如：`<span>`, 或 a `<button>` 元素。
+
+使用容器元素 (如： `<div>`) 来创建下拉菜单的内容，并放在任何你想放的位置上。
+
+使用 `<div>` 元素来包裹这些元素，并使用 CSS 来设置下拉内容的样式。
+
+**CSS 部分：**
+
+`.dropdown` 类使用 `position:relative`, 这将设置下拉菜单的内容放置在下拉按钮 (使用 `position:absolute`) 的右下角位置。
+
+`.dropdown-content` 类中是实际的下拉菜单。默认是隐藏的，在鼠标移动到指定元素后会显示。 注意 `min-width` 的值设置为 160px。你可以随意修改它。 **注意:** 如果你想设置下拉内容与下拉按钮的宽度一致，可设置 `width` 为 100% ( `overflow:auto` 设置可以在小尺寸屏幕上滚动)。
+
+我们使用 `box-shadow` 属性让下拉菜单看起来像一个"卡片"。
+
+`:hover` 选择器用于在用户将鼠标移动到下拉按钮上时显示下拉菜单。
+
+### 下拉菜单
+
+创建下拉菜单，并允许用户选取列表中的某一项：
+
+这个实例类似前面的实例，当我们在下拉列表中添加了链接，并设置了样式：
+
+```css
+<!DOCTYPE html>
+<html>
+<head>
+<title>QWQ</title>
+<meta charset="utf-8">
+<style>
+/* 下拉按钮样式 */
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* 容器 <div> - 需要定位下拉内容 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 下拉内容 (默认隐藏) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+/* 下拉菜单的链接 */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* 鼠标移上去后修改下拉菜单链接颜色 */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* 在鼠标移上去后显示下拉菜单 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 当下拉内容显示后修改下拉按钮的背景颜色 */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+</style>
+</head>
+<body>
+
+<h2>下拉菜单</h2>
+<p>鼠标移动到按钮上打开下拉菜单。</p>
+
+<div class="dropdown">
+  <button class="dropbtn">下拉菜单</button>
+  <div class="dropdown-content">
+    <a href="https://github.com/qiqizizzz/qiqizizzz-codenotes">qiqizizzz 1</a>
+    <a href="https://github.com/qiqizizzz/qiqizizzz-codenotes">qiqizizzz 2</a>
+    <a href="https://github.com/qiqizizzz/qiqizizzz-codenotes">qiqizizzz 3</a>
+  </div>
+</div>
+
+</body>
+</html>
+```
+
