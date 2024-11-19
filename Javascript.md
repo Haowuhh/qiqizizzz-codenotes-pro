@@ -2,7 +2,7 @@
 
 ## 1.JavaScript 基础
 
-**1.对代码行进行折行**
+### **1.对代码行进行折行**
 
 您可以在文本字符串中使用反斜杠对代码行进行换行。下面的例子会正确地显示：
 
@@ -13,7 +13,7 @@ document.write("你好 \
 
 **知识点**：JavaScript 是脚本语言，浏览器会在读取代码时，逐行地执行脚本代码。而对于传统编程来说，会在执行前对所有代码进行编译。
 
-**2.注释和结束符**
+### **2.注释和结束符**
 
 注释的两种写法
 
@@ -26,7 +26,7 @@ document.write("你好 \
 
 结束符`;`可写可不写，最好不写。
 
-**3.typeof**
+### **3.typeof**
 
 可以返回该字段的类型
 
@@ -34,7 +34,7 @@ document.write("你好 \
 document.getElementById("demo").innerHTML = "carName 的类型是：" +  typeof "你好";
 ```
 
-**4.作用域**
+### **4.作用域**
 
 你的全局变量，或者函数，可以覆盖 window 对象的变量或者函数。 局部变量，包括 window 对象可以覆盖全局变量和函数。
 
@@ -46,7 +46,7 @@ document.getElementById("demo").innerHTML = "carName 的类型是：" +  typeof 
 - **闭包：**JavaScript 中的闭包特性允许内部函数访问外部函数的局部变量。即使外部函数执行完毕后，其局部变量仍然可以被内部函数引用。
 - **属性和方法：**定义在全局作用域中的变量和函数都会变成 window 对象的属性和方法，因此可以在调用时省略 window，直接使用变量名或函数名。
 
-**5.字符串长度**
+### **5.字符串长度**
 
 可以使用内置属性 **length** 来计算字符串的长度：
 
@@ -59,7 +59,7 @@ document.write("<p>" + txt.length + "</p>");
 </script>
 ```
 
-**6.特殊字符**
+### **6.特殊字符**
 
 在 JavaScript 中，字符串写在单引号或双引号中。
 
@@ -94,9 +94,7 @@ document.write("<p>" + txt.length + "</p>");
 | `\b` | 退格符      |
 | `\f` | 换页符      |
 
-**7.字符串相关函数**
-
-## 字符串方法
+### **7.字符串相关函数**
 
 | 方法                  | 描述                                                         |
 | :-------------------- | :----------------------------------------------------------- |
@@ -121,6 +119,44 @@ document.write("<p>" + txt.length + "</p>");
 | `toUpperCase()`       | 把字符串转换为大写                                           |
 | `trim()`              | 移除字符串首尾空白                                           |
 | `valueOf()`           | 返回某个字符串对象的原始值                                   |
+
+### 8.JavaScript数据类型
+
+JavaScript 中有以下七种数据类型：
+
+- **`string`**：表示文本内容，例如 "Hello"。
+- **`number`**：表示数值，例如123。
+- **`boolean`**：表示真或假的值，例如true或false。
+- **`undefined`**：表示未定义或者未赋值的变量或者属性，例如var x;。
+- **`object`**：表示复杂的数据结构，例如{ x: 1, y: 2 }。
+- **`function`**：表示可执行的代码块，例如function() { ... }。
+- **`symbol`**：表示唯一的标识符，例如Symbol("foo")。
+
+**typeof** 运算符会根据操作数的数据类型返回相应的字符串。例如：
+
+```js
+typeof "Hello" // 返回"string"
+
+typeof 123 // 返回"number"
+
+typeof true // 返回"boolean"
+
+typeof x // 返回"undefined"
+
+typeof { x: 1, y: 2 } // 返回"object"
+
+typeof function() { ... } // 返回"function"
+
+typeof Symbol("foo") // 返回"symbol"
+```
+
+有一些特殊情况需要注意：
+
+- `typeof null` 会返回 "object"，这是一个历史遗留的问题，实际上 null 是一个空或者不存在的值，不是一个对象。
+- `typeof NaN` 会返回 "number"，这是因为 NaN 是一个特殊的数值类型，表示 Not a Number（不是一个数字）。
+- `typeof []` 会返回 "object"，这是因为数组是一种特殊的对象类型，它有一个 length 属性和一些方法来操作元素。
+
+
 
 ## 2.JavaScript用法
 
@@ -643,3 +679,288 @@ function displayDate(){
 | `onload`      | 浏览器已完成页面的加载               |
 
 ## 8.JavaScript字符串模版
+
+JavaScript 中的模板字符串是一种方便的字符串语法，允许你在字符串中嵌入表达式和变量。
+
+模板字符串使用反引号 **``** 作为字符串的定界符分隔的字面量。
+
+模板字面量是用反引号（**`**）分隔的字面量，允许多行字符串、带嵌入表达式的字符串插值和一种叫带标签的模板的特殊结构。
+
+**1.语法**
+
+```js
+`string text`
+
+`string text line 1
+ string text line 2`
+
+`string text ${expression} string text`
+
+tagFunction`string text ${expression} string text`
+```
+
+**参数**
+
+- **`string text`**：将成为模板字面量的一部分的字符串文本。几乎允许所有字符，包括换行符和其他空白字符。但是，除非使用了标签函数，否则无效的转义序列将导致语法错误。
+- **`expression`**：要插入当前位置的表达式，其值被转换为字符串或传递给 `tagFunction`。
+- **`tagFunction`**：如果指定，将使用模板字符串数组和替换表达式调用它，返回值将成为模板字面量的值。
+
+```js
+let text = `Hello RUNOOB!`;
+```
+
+**2.模板字符串中可以同时使用单引号和双引号：**
+
+```js
+let text = `He's often called "Runoob"`;
+```
+
+**3.模板字符串还支持多行文本，而无需使用特殊的转义字符：**
+
+```js
+const multiLineText = `
+  This is
+  a multi-line
+  text.
+`;
+```
+
+若要转义模板字面量中的反引号（**`**），需在反引号之前加一个反斜杠（\）。
+
+```js
+`\`` === "`"; // true
+```
+
+模板字面量用反引号（**`**）括起来，而不是双引号（**"**）或单引号（**'**）。
+
+除了普通字符串外，模板字面量还可以包含占位符——一种由美元符号和大括号分隔的嵌入式表达式：**`${expression}`**。
+
+字符串和占位符被传递给一个函数（要么是默认函数，要么是自定义函数）。默认函数（当未提供自定义函数时）只执行字符串插值来替换占位符，然后将这些部分拼接到一个字符串中。
+
+**4.模板字符串中允许我们使用变量：**
+
+```js
+const name = 'Runoob';
+const age = 30;
+const message = `My name is ${name} and I'm ${age} years old.`;
+
+/* 以上实例中，${name} 和 ${age} 是模板字符串的表达式部分，它们被包含在 ${} 内部，并在运行时求值。
+模板字符串允许你在字符串中引用变量、执行函数调用和进行任意的JavaScript表达式。*/
+```
+
+**5.模板字符串中允许我们使用表达式：**
+
+```js
+let price = 10;
+let VAT = 0.25;
+
+let total = `Total: ${(price * (1 + VAT)).toFixed(2)}`;
+```
+
+**6.模板字符串当作 HTML 模板使用：**
+
+```js
+let header = "";
+let tags = ["RUNOOB", "GOOGLE", "TAOBAO"];
+
+let html = `<h2>${header}</h2><ul>`;
+for (const x of tags) {
+  html += `<li>${x}</li>`;
+}
+
+html += `</ul>`;
+```
+
+## 9.JavaScript 比较和逻辑运算符
+
+比较和逻辑运算符用于测试 *true* 或者 *false*。
+
+### 比较运算符
+
+比较运算符在逻辑语句中使用，以测定变量或值是否相等。
+
+| 运算符 | 描述                                               |
+| ------ | -------------------------------------------------- |
+| ==     | 等于                                               |
+| ===    | 绝对等于（值和类型均相等）                         |
+| !=     | 不等于                                             |
+| !==    | 不绝对等于（值和类型有一个不相等，或两个都不相等） |
+| >      | 大于                                               |
+| <      | 小于                                               |
+| >=     | 大于或等于                                         |
+| <=     | 小于或等于                                         |
+
+### 逻辑运算符
+
+逻辑运算符用于测定变量或值之间的逻辑。
+
+给定 x=6 以及 y=3，下表解释了逻辑运算符：
+
+| 运算符 | 描述 | 例子                      |
+| :----- | :--- | :------------------------ |
+| &&     | and  | (x < 10 && y > 1) 为 true |
+| \|\|   | or   | (x==5 \|\| y==5) 为 false |
+| !      | not  | !(x==y) 为 true           |
+
+### 条件运算符
+
+JavaScript 还包含了基于某些条件对变量进行赋值的条件运算符。
+
+**语法**
+
+```js
+variablename=(condition)?value1:value2
+
+voteable=(age<18)?"年龄太小":"年龄已达到";
+```
+
+## 10.JavaScript for/in循环
+
+`JavaScript for/in` 语句循环遍历对象的属性：
+
+```js
+var person={fname:"Bill",lname:"Gates",age:56}; 
+ 
+for (x in person)  // x 为属性名
+{
+    txt=txt + person[x];
+}
+```
+
+## 11.JavaScript 标签
+
+正如您在 switch 语句那一章中看到的，可以对 JavaScript 语句进行标记。
+
+如需标记 JavaScript 语句，请在语句之前加上冒号：
+
+```js
+label: statements
+```
+
+break 和 continue 语句仅仅是能够跳出代码块的语句。
+
+语法:
+
+```js
+break labelname;   
+continue labelname;
+```
+
+continue 语句（带有或不带标签引用）只能用在循环中。
+
+break 语句（不带标签引用），只能用在循环或 switch 中。
+
+通过标签引用，break 语句可用于跳出任何 JavaScript 代码块：
+
+```js
+cars=["BMW","Volvo","Saab","Ford"];
+list: 
+{
+    document.write(cars[0] + "<br>"); 
+    document.write(cars[1] + "<br>"); 
+    document.write(cars[2] + "<br>"); 
+    break list;
+    document.write(cars[3] + "<br>"); 
+    document.write(cars[4] + "<br>"); 
+    document.write(cars[5] + "<br>"); 
+}
+```
+
+## 12.JavaScript typeof, null, 和 undefined
+
+### 1.typeof 操作符
+
+你可以使用 `typeof` 操作符来检测变量的数据类型。
+
+```js
+typeof "John"                // 返回 string 
+typeof 3.14                  // 返回 number
+typeof false                 // 返回 boolean
+typeof [1,2,3,4]             // 返回 object
+typeof {name:'John', age:34} // 返回 object
+```
+
+>   在JavaScript中，数组是一种特殊的对象类型。 因此 `typeof [1,2,3,4]` 返回 `object`。 
+
+### 2.null
+
+在 JavaScript 中 `null` 表示 "什么都没有"。
+
+null是一个只有一个值的特殊类型。表示一个空对象引用。
+
+>  用 `typeof` 检测 `null` 返回是`object`。
+
+```js
+var
+person = null;           // 值为 null(空), 但类型为对象
+```
+
+### 3.undefined
+
+在 JavaScript 中, **`undefined`** 是一个没有设置值的变量。
+
+**`typeof`** 一个没有值的变量会返回 **`undefined`**。
+
+```js
+var person;                  // 值为 undefined(空), 类型是undefined
+
+//任何变量都可以通过设置值为 undefined 来清空。 类型为 undefined.
+person = undefined;          // 值为 undefined, 类型是undefined
+```
+
+### 4.undefined 和 null 的区别
+
+`null` 和 `undefined` 的值相等，但类型不等：
+
+```js
+typeof undefined       // undefined
+typeof null         // object
+null === undefined      // false
+null == undefined      // true
+```
+
+**1、定义**
+
+-  （1）undefined：是所有没有赋值变量的默认值，自动赋值。
+-  （2）null：主动释放一个变量引用的对象，表示一个变量不再指向任何对象地址。
+
+**2、何时使用null?**
+
+当使用完一个比较大的对象时，需要对其进行释放内存时，设置为 null。
+
+**3、null 与 undefined 的异同点是什么呢？**
+
+**共同点**：都是原始类型，保存在栈中变量本地。
+
+不同点：
+
+（1）`undefined`——表示变量声明过但并未赋过值。
+
+它是所有未赋值变量默认值，例如：
+
+```js
+var a;    // a 自动被赋值为 undefined
+```
+
+（2）`null`——表示一个变量将来可能指向一个对象。
+
+一般用于主动释放指向对象的引用，例如：
+
+```js
+var emps = ['ss','nn'];
+emps = null;     // 释放指向数组的引用
+```
+
+**4、延伸——垃圾回收站**
+
+它是专门释放对象内存的一个程序。
+
+（1）在底层，后台伴随当前程序同时运行；引擎会定时自动调用垃圾回收期；
+
+（2）总有一个对象不再被任何变量引用时，才释放。
+
+### 13.JavaScript 正则表达式
+
+正则表达式（英语：Regular Expression，在代码中常简写为regex、regexp或RE）使用单个字符串来描述、匹配一系列符合某个句法规则的字符串搜索模式。
+
+搜索模式可用于文本搜索和文本替换。
