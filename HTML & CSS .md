@@ -347,9 +347,9 @@ b、图片 1.jpg 在 image 文件夹中，1.html 在 connage 文件夹中，imag
 
 ## 4.基础概念
 
-### 4.1 HTML标签
+### 4.1 元素显示模式
 
-在CSS中，html中的标签元素大体被分为三种不同的类型： 块状元素、内联元素(又叫行内元素)和内联块状元素。
+在CSS中，html中的标签元素大体被分为三种不同的类型： 块状元素、内联元素(又叫行内元素)和内联块状(又叫行内块元素)元素。
 
 常用的块状元素有：
 
@@ -366,11 +366,16 @@ a{display:block;}
 ```
 
 块级元素特点：
- 1、每个块级元素都从新的一行开始，并且其后的元素也另起一行。（真霸道，一个块级元素独占一行）;
- 2、元素的高度、宽度、行高以及顶和底边距都可设置。
- 3、元素宽度在不设置的情况下，是它本身父容器的100%（和父元素的宽度一致），除非设定一个宽度。
 
-**2.内联元素**
+1、每个块级元素都从新的一行开始，并且其后的元素也另起一行。（真霸道，一个块级元素独占一行）;
+
+2、元素的高度、宽度、行高以及顶和底边距都可设置。
+
+3、元素宽度在不设置的情况下，是它本身父容器的100%（和父元素的宽度一致），除非设定一个宽度。
+
+4、是一个盒子，里面可以放行内或者块级元素。
+
+**2.内联元素--行内元素**
 
 常用的内联元素有： 
 `<a>`、`<span>`、`<br>`、`<i>`、`<em>`、`<strong>`、`<label>`、`<q>`、`<var>`、`<cite>`、`<code>`
@@ -386,18 +391,66 @@ a{display:block;}
 ```
 
 内联元素特点： 
-1、和其他元素都在一行上； 
+
+1、相邻行内元素在一行上，一行可以显示多个。 
+
 **2、元素的高度、宽度及顶部和底部边距不可设置；** 
+
 3、元素的宽度就是它包含的文字或图片的宽度，不可改变。
 
-**3.内联块状元素**
+4、行内元素只能容纳文本或其他行内元素。
 
-常用的内联块状元素有：
- `<img>`、`<input>`
- 内联块状元素（inline-block）就是同时具备内联元素、块状元素的特点，代码`display:inline-block`就是将元素设置为内联块状元素。
+**3.内联块状元素--行内块元素**
+
+常用的内联块状元素有： `<img>`、`<input>`、`<td>`
+
+内联块状元素（inline-block）就是同时具备内联元素、块状元素的特点，代码`display:inline-block`就是将元素设置为内联块状元素。
+
 inline-block 元素特点： 
+
 1、和其他元素都在一行上； 
+
 2、元素的高度、宽度、行高以及顶和底边距都可设置。
+
+| 元素模式   | 元素排列               | 设置样式               | 默认宽度         | 包含                     |
+| ---------- | ---------------------- | ---------------------- | ---------------- | ------------------------ |
+| 块级元素   | 一行只能放一个块级元素 | 可以设置宽度高度       | 容器的100%       | 容器级可以包含任何标签   |
+| 行内元素   | 一行可以放多个行内元素 | 不可以直接设置宽度高度 | 它本身内容的宽度 | 容纳文本或则其他行内元素 |
+| 行内块元素 | 一行放多个行内块元素   | 可以设置宽度和高度     | 它本身内容的宽度 |                          |
+
+#### 元素显示模式的转换
+
+**1.转换为块级元素**
+
+```css
+<style>
+    a{
+        display: block;   //核心语句
+    }
+</style>
+```
+
+**2.转换为行内元素**
+
+```css
+<style>
+	div{
+		display: inline;
+		}
+<style/>
+```
+
+**3.转换为行内块元素**
+
+```css
+<style>
+	span{
+		display:inline-block;
+		}
+<style/>
+```
+
+
 
 ### 4.2 长度单位
 
@@ -410,6 +463,49 @@ inline-block 元素特点：
 - 绝对单位
 
   `cm`,`mm`,`q`,`in`,`pt`,`pc`,`px`
+
+### 4.3 CSS的三大特性
+
+CSS 有三个非常重要的三个特性:层叠性、继承性、优先级。
+
+**1.层叠性**
+
+相同选择器给设置相同的样式，此时一个样式就会覆盖(层叠)另一个冲突的样式。层叠性主要解决样式冲突的问题。
+
+层叠性原则：
+
+- 样式冲突，遵循的原则是就近原则，哪个样式离结构近，就执行哪个样式。
+- 样式不冲突，不会层叠
+
+**2.继承性**
+
+CSS中的继承: 子标签会继承父标签的某些样式，如文本颜色和字号。简单的理解就是:子承父业。恰当地使用继承可以简化代码，降低CSS样式的复杂性。
+
+子元素可以继承父元素的样式(text-，font-，line-这些元素开头的可以继承，以及color属性)
+
+**3.优先级**
+
+| 选择器               | 选择器权重 |
+| -------------------- | ---------- |
+| 继承或者*            | 0,0,0,0    |
+| 元素选择器           | 0,0,0,1    |
+| 类选择器，伪类选择器 | 0,0,1,0    |
+| ID选择器             | 0,1,0,0    |
+| 行内样式 style=""    | 1,0,0,0    |
+| !important 重要的    | ∞ 无穷大   |
+
+优先级注意点:
+
+1.权重是有4组数字组成,但是不会有进位。
+
+2.可以理解为类选择器永远大于元素选择器,id选择器永远大于类选择器,以此类推。
+
+3.等级判断从左向右，如果某一位数值相同，则判断下一位数值。
+
+4.可以简单记忆法: 通配符和继承权重为0,标签选择器为1,类(伪类)选择器为10,id选择器 100,行内样式表为
+1000,!important无穷大。
+
+5.继承的权重是0，如果该元素没有直接选中，不管父元素权重多高，子元素得到的权重都是0。
 
 # 二、HTML
 
@@ -1990,7 +2086,9 @@ CSS 属性定义背景效果:
 
 ### 背景颜色
 
-background-color 属性定义了元素的背景颜色.
+**1.语法**
+
+`background-color` 属性定义了元素的背景颜色.
 
 页面的背景颜色使用在body的选择器中:
 
@@ -2004,9 +2102,59 @@ CSS中，颜色值通常以以下方式定义:
 - RGB - 如："rgb(255,0,0)"
 - 颜色名称 - 如："red"
 
+特别的，`transparent`是背景颜色的初始值（透明）。
+
+**实例：**
+
+```css
+/* 关键字值 */
+background-color: red;
+background-color: indigo;
+
+/* 十六进制值 */
+background-color: #bbff00; /* 完全不透明 */
+background-color: #bf0; /* 完全不透明简写 */
+background-color: #11ffee00; /* 完全透明 */
+background-color: #1fe0; /* 完全透明简写 */
+background-color: #11ffeeff; /* 完全不透明 */
+background-color: #1fef; /* 完全不透明简写 */
+
+/* RGB 值 */
+background-color: rgb(255 255 128); /* 完全不透明 */
+background-color: rgb(117 190 218 / 50%); /* 50% 透明 */
+
+/* HSL 值 */
+background-color: hsl(50 33% 25%); /* 完全不透明 */
+background-color: hsl(50 33% 25% / 75%); /* 75% 不透明，25% 透明 */
+
+/* 特殊关键字值 */
+background-color: currentcolor;
+background-color: transparent;
+
+/* 全局值 */
+background-color: inherit;
+background-color: initial;
+background-color: revert;
+background-color: revert-layer;
+background-color: unset;
+```
+
+**2.背景颜色-半透明(CSS3)**
+
+CSS3为我们 提供了背景颜色半透明的效果。
+
+```css
+background:rgba(0,0,0,0.3);
+```
+
+- 最后一个参数是alpha透明度，取值范围在0~1之间
+- 我们习惯把0.3的0省略掉，写为`background:rgba(0,0,0,.3);`
+
+**注意**：背景半透明是指盒子背景半透明，盒子里面的内容不受影响。
+
 ### 背景图像
 
-background-image 属性描述了元素的背景图像.
+`background-image` 属性描述了元素的背景图像。实际开发常见于logo或者一些装饰性的小图片或者是超大的背景图片，优点是便于控制位置。
 
 默认情况下，背景图像进行平铺重复显示，以覆盖整个元素实体.
 
@@ -2016,50 +2164,78 @@ background-image 属性描述了元素的背景图像.
 body {background-image:url('paper.gif');}
 ```
 
-### 背景图像 - 水平或垂直平铺
+**1.背景图像 - 水平或垂直平铺**
 
-默认情况下 background-image 属性会在页面的水平或者垂直方向平铺。
+默认情况下 **`background-image`** 属性会在页面的水平或者垂直方向平铺。
 
 一些图像如果在水平方向与垂直方向平铺，这样看起来很不协调
 
-如果图像只在水平方向平铺 (repeat-x), 页面背景会更好些:
+如果图像只在水平方向平铺 (`repeat-x`), 页面背景会更好些:
 
 ```css
 body
 {
-background-image:url('gradient2.png');
-background-repeat:repeat-x;
+	background-image:url('gradient2.png');
+	background-repeat:repeat-x;
 }
 ```
 
-### 背景图像- 设置定位与不平铺
+**2.背景图像- 设置定位与不平铺**
 
-让背景图像不影响文本的排版
+让背景图像不影响文本的排版。
 
-如果你不想让图像平铺，你可以使用 background-repeat 属性:
+如果你不想让图像平铺，你可以使用 `background-repeat` 属性:
 
 ```css
 body
 {
-background-image:url('img_tree.png');
-background-repeat:no-repeat;
+	background-image:url('img_tree.png');
+	background-repeat:no-repeat;      /*不平铺*/
 }
 ```
 
-以上实例中，背景图像与文本显示在同一个位置，为了让页面排版更加合理，不影响文本的阅读，我们可以改变图像的位置。
+我们还可以利用 `background-position` 属性改变图像在背景中的位置:
 
-可以利用 background-position 属性改变图像在背景中的位置:
+> **1.若参数是方位名词**
+
+- 如果指定的两个值都是方位名词，则两个值前后顺序无关，比如 **`left top`**和**`top left`**效果一致。
+- 如果只指定了一个方位名词，另一个词省略，则第二个值默认居中对齐。
+
+> **2.若参数是精确单位**
+
+- 如果参数值是精确坐标，那么第一个肯定是x坐标，第二个一定是y坐标。
+- 如果只指定一个数值，那该数值一定是x坐标，另一个默认垂直居中。
+
+> **3.若参数是混合单位**
+
+- 如果指定的两个值是精确单位和方位名词混合使用，则第一个值是x坐标，第二个值是y坐标。
 
 ```css
 body
 {
-background-image:url('img_tree.png');
-background-repeat:no-repeat;
-background-position:right top;
+	background-image:url('img_tree.png');
+	background-repeat:no-repeat;
+	background-position:right top;    /*若参数是方位名词*/
+    background-position:10px 20px;    /*若参数是精确单位*/
+    background-position:10px center;  /*若参数是混合单位*/
 }
 ```
 
-### 背景- 简写属性
+**3.背景图像固定(背景附着)**
+
+`background-attachment`属性设置背景图像是否固定或者随着页面的其余部分滚动。
+
+`background-attachment`后期可以制作视差滚动的效果。
+
+```css
+background-attchment:scroll | fixed
+```
+
+`scroll`：背景图像是随对象内容滚动
+
+`fixed`：背景图像固定
+
+### 简写属性
 
 在以上实例中我们可以看到页面的背景颜色通过了很多的属性来控制。
 
@@ -2169,6 +2345,21 @@ p.capitalize {text-transform:capitalize;}
 ```css
 p {text-indent:50px;}
 ```
+
+### 单行文本居中
+
+```css
+div{
+	width:100px;
+	height:40px;
+	line-height:40px;
+}
+/* 只要 height=line-height就能实现文字居中 */
+```
+
+如果行高小于盒子高度，文字会偏上；
+
+如果行高大于盒子高度，则文字偏下。
 
 ### --CSS 文本属性
 
@@ -2382,9 +2573,9 @@ CSS 列表属性作用如下：
 
 使用 CSS，可以列出进一步的样式，并可用图像作列表项标记。
 
-### 不同的列表项标记
+### 列表项标记样式
 
-list-style-type属性指定列表项标记的类型是：
+**1.list-style-type属性指定列表项标记的类型是：**
 
 ```css
 ul.a {list-style-type: circle;}
@@ -2394,7 +2585,7 @@ ol.c {list-style-type: upper-roman;}
 ol.d {list-style-type: lower-alpha;}
 ```
 
-### 作为列表项标记的图像
+**2.列表项标记的图像**
 
 要指定列表项标记的图像，使用列表样式图像属性：
 
@@ -2405,7 +2596,7 @@ ul
 }
 ```
 
-### 浏览器兼容性解决方案
+### 浏览器兼容性
 
 同样在所有的浏览器，下面的例子会显示的图像标记：
 
@@ -2435,7 +2626,7 @@ ul li
   - 您需要的定位图像位置（左 0px 和上下 5px）
   - 用 padding-left 属性把文本置于列表中
 
-### 列表 - 简写属性
+### 简写属性
 
 在单个属性中可以指定所有的列表属性。这就是所谓的简写属性。
 
@@ -2458,7 +2649,7 @@ ul
 
 ### 移除默认设置
 
-list-style-type:none 属性可以用于移除小标记。默认情况下列表 <ul> 或 <ol> 还设置了内边距和外边距，可使用 `margin:0` 和 `padding:0` 来移除:
+list-style-type:none 属性可以用于移除小标记。默认情况下列表 `<ul>` 或 `<ol>` 还设置了内边距和外边距，可使用 `margin:0` 和 `padding:0` 来移除:
 
 ```css
 ul {
@@ -2620,7 +2811,7 @@ div {
 
 总元素的高度=高度+顶部填充+底部填充+上边框+下边框+上边距+下边距
 
-### 浏览器的兼容性问题
+### 浏览器兼容性
 
 一旦为页面设置了恰当的 DTD，大多数浏览器都会按照上面的图示来呈现内容。然而 IE 5 和 6 的呈现却是不正确的。根据 W3C 的规范，元素内容占据的空间是由 width 属性设置的，而内容周围的 padding 和 border 值是另外计算的。不幸的是，IE5.X 和 6 在怪异模式中使用自己的非标准模型。这些浏览器的 width 属性不是内容的宽度，而是内容、内边距和边框的宽度的总和。
 
@@ -2630,7 +2821,7 @@ IE8 及更早IE版本不支持设置填充的宽度和边框的宽度属性。
 
 解决IE8及更早版本不兼容问题可以在HTML页面声明 `<!DOCTYPE html>`即可。
 
-## 11.CSS Border(边框)
+## 11.CSS Border
 
 CSS边框属性允许你指定一个元素边框的样式和颜色。
 
@@ -2731,7 +2922,7 @@ border-style属性可以有1-4个值：
 
 上面的例子用了border-style。然而，它也可以和border-width 、 border-color一起使用。
 
-### 边框-简写属性
+### 简写属性
 
 上面的例子用了很多属性来设置边框。
 
@@ -2773,7 +2964,7 @@ border:5px solid red;
 | border-top-width    | 设置元素的上边框的宽度。                                     |
 | border-radius       | 设置圆角的边框。                                             |
 
-## 12.CSS outline(轮廓)
+## 12.CSS outline
 
 轮廓（outline）是绘制于元素周围的一条线，位于边框边缘的外围，可起到突出元素的作用。
 
@@ -2790,7 +2981,7 @@ border:5px solid red;
 | outline-style | 设置轮廓的样式                 | none dotted dashed solid double groove ridge inset outset inherit | 2    |
 | outline-width | 设置轮廓的宽度                 | thin medium thick *length *inherit                           | 2    |
 
-## 13.CSS margin(外边距)
+## 13.CSS margin
 
 CSS margin(外边距)属性定义元素周围的空间。
 
@@ -2806,7 +2997,7 @@ margin 可以单独改变元素的上，下，左，右边距，也可以一次�
 
 > Margin可以使用负值，重叠的内容。
 
-### margin - 单边外边距属性
+### 单边外边距属性
 
 在CSS中，它可以指定不同的侧面不同的边距：
 
@@ -2817,7 +3008,18 @@ margin-right:50px;
 margin-left:50px;
 ```
 
-### margin - 简写属性
+### 清除内外边距
+
+```css
+*{
+	margin:0px;           /*清除外边距*/
+	padding;0px;          /*清除内边距*/
+}
+```
+
+**注意**：行内元素为了照顾兼容性，尽量只设置左右内外边距，不要设置上下内外边距 。但是转换为块级和行内元素就可以了。
+
+### 简写属性
 
 为了缩短代码，有可能使用一个属性中margin指定的所有边距属性。这就是所谓的简写属性。
 
@@ -2854,7 +3056,7 @@ margin属性可以有一到四个值。
 | margin-right  | 设置元素的右外边距。                       |
 | margin-top    | 设置元素的上外边距。                       |
 
-## 14.CSS padding(填充)
+## 14.CSS padding
 
 CSS padding（填充）是一个简写属性，定义元素边框与元素内容之间的空间，即上下左右的内边距。
 
@@ -2867,7 +3069,7 @@ CSS padding（填充）是一个简写属性，定义元素边框与元素内容
 | length | 定义一个固定的填充(像素, pt, em,等) |
 | %      | 使用百分比值定义一个填充            |
 
-### 填充- 单边内边距属性
+### 单边内边距属性
 
 在CSS中，它可以指定不同的侧面不同的填充
 
@@ -2883,7 +3085,7 @@ padding-left:50px;
 - 下内边距是 25px
 - 左内边距是 50px
 
-### 填充 - 简写属性
+### 简写属性
 
 为了缩短代码，它可以在一个属性中指定的所有填充属性。
 
@@ -2932,35 +3134,71 @@ Padding属性，可以有一到四个值。
 | padding-right  | 设置元素的右部填充                         |
 | padding-top    | 设置元素的顶部填充                         |
 
-## 15.CSS 分组和嵌套选择器
+## 15.CSS 基本选择器
 
-### 分组选择器
+[CSS选择器](https://blog.csdn.net/weixin_68917948/article/details/129870632?ops_request_misc=%257B%2522request%255Fid%2522%253A%252217F8A6AD-7C50-4A72-B299-C416C9274087%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=17F8A6AD-7C50-4A72-B299-C416C9274087&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-129870632-null-null.142^v100^control&utm_term=HTML%E9%80%89%E6%8B%A9%E5%99%A8&spm=1018.2226.3001.4187)
 
-在样式表中有很多具有相同样式的元素。
+css选择器可以分为**基本选择器**、**包含选择器**、**属性选择器**、**伪类选择器**和**伪元素选择器**几类。
+
+其中基本选择器又可以细分为：标签选择器、ID选择器、类选择器和通用选择器。(**ps:优先级为：ID > class > 标签 > 通配符**)
+
+包含选择器可以分为：子代选择器、后代选择器和分组选择器。
+
+### ID选择器
+
+ ID选择器是通过获取`id`的属性来进行设置，使用 #+ID属性值来选中。
 
 ```css
-h1 {
-    color:green;
-}
-h2 {
-    color:green;
-}
-p {
-    color:green;
-}
+<style>
+	#black{
+       color: black;
+     }
+</style>
+...
+<div id="black" > ok. </div>
 ```
 
-为了尽量减少代码，你可以使用分组选择器。
+### 类选择器
 
-每个选择器用逗号分隔。
-
-在下面的例子中，我们对以上代码使用分组选择器：
+类选择器是通过获取`class`属性来进行设置，使用 .+class属性值来选中。
 
 ```css
-h1,h2,p
-{
-    color:green;
-}
+<style>
+      .green{
+         color:green;
+      }
+</style>
+...  
+<div class="green"> ok. </div>
+```
+
+### 通用选择器 
+
+通用选择器使用 **`*`** 来代指，它代表的是选中了父元素中的所有内容。
+
+```css
+<style>
+    *{
+      color: blue;
+    }
+</style>
+...
+<div>yes yes yes </div>
+<div>no no no</div>
+```
+
+###  标签选择器
+
+  标签选择器是通过获取标签的名称来进行设置。
+
+```css
+<style>
+      div{
+          color: red;
+      }
+</style>
+...
+<div>yes yes yes </div>
 ```
 
 ### 嵌套选择器
@@ -2993,522 +3231,7 @@ p.marked{
 }
 ```
 
-## 16.CSS  Dimension(尺寸)
-
-CSS 尺寸 (Dimension) 属性允许你控制元素的高度和宽度。同样，它允许你增加行间距。
-
-### --CSS 尺寸属性
-
-| 属性        | 描述                 |
-| :---------- | :------------------- |
-| height      | 设置元素的高度。     |
-| line-height | 设置行高。           |
-| max-height  | 设置元素的最大高度。 |
-| max-width   | 设置元素的最大宽度。 |
-| min-height  | 设置元素的最小高度。 |
-| min-width   | 设置元素的最小宽度。 |
-| width       | 设置元素的宽度。     |
-
-
-
-## 17.CSS Display(显示) 与 Visibility（可见性）
-
-display属性设置一个元素应如何显示，visibility属性指定一个元素应可见还是隐藏。
-
-### 隐藏元素 visibility:hidden
-
-隐藏一个元素可以通过把display属性设置为"none"，或把visibility属性设置为"hidden"。但是请注意，这两种方法会产生不同的结果。
-
-visibility:hidden可以隐藏某个元素，但隐藏的元素仍需占用与未隐藏之前一样的空间。也就是说，该元素虽然被隐藏了，但仍然会影响布局。
-
-```css
-h1.hidden {visibility:hidden;}
-```
-
-### 隐藏元素 display:none
-
-display:none可以隐藏某个元素，且隐藏的元素不会占用任何空间。也就是说，该元素不但被隐藏了，而且该元素原本占用的空间也会从页面布局中消失。
-
-```css
-h1.hidden {display:none;}
-```
-
-### Display - 块和内联元素
-
-块元素是一个元素，占用了全部宽度，在前后都是换行符。
-
-块元素的例子：
-
-- `<h1>`
-- `<p>`
-- `<div>`
-
-内联元素只需要必要的宽度，不强制换行。
-
-内联元素的例子：
-
-- `<span>`
-- `<a>`
-
-### 如何改变一个元素显示
-
-可以更改内联元素和块元素，反之亦然，可以使页面看起来是以一种特定的方式组合，并仍然遵循web标准。
-
-下面的示例把列表项显示为内联元素：
-
-```css
-li {display:inline;}
-```
-
-下面的示例把span元素作为块元素：
-
-```css
-span {display:block;}
-```
-
-**注意：**变更元素的显示类型看该元素是如何显示，它是什么样的元素。例如：一个内联元素设置为display:block是不允许有它内部的嵌套块元素。
-
-## 18.CSS Position(定位)
-
-position 属性指定了元素的定位类型。
-
-position 属性的五个值：
-
-- static
-- relative
-- fixed
-- absolute
-- sticky
-
-元素可以使用的顶部，底部，左侧和右侧属性定位。然而，这些属性无法工作，除非事先设定position属性。他们也有不同的工作方式，这取决于定位方法。
-
-### static 定位
-
-HTML 元素的默认值，即没有定位，遵循正常的文档流对象。
-
-静态定位的元素不会受到 top, bottom, left, right影响。
-
-```css
-div.static {
-    position: static;
-    border: 3px solid #73AD21;
-}
-```
-
-### fixed 定位
-
-元素的位置相对于浏览器窗口是固定位置。
-
-即使窗口是滚动的它也不会移动：
-
-```css
-p.pos_fixed
-{
-    position:fixed;
-    top:30px;
-    right:5px;
-}
-```
-
-**注意**： Fixed 定位在 IE7 和 IE8 下需要描述 !DOCTYPE 才能支持。
-
-Fixed定位使元素的位置与文档流无关，因此不占据空间。
-
-Fixed定位的元素和其他元素重叠。
-
-### relative 定位
-
-相对定位元素的定位是相对其正常位置。
-
-```css
-h2.pos_left
-{
-    position:relative;
-    left:-20px;
-}
-h2.pos_right
-{
-    position:relative;
-    left:20px;
-}
-```
-
-移动相对定位元素，但它原本所占的空间不会改变。
-
-```css
-h2.pos_top
-{
-    position:relative;
-    top:-50px;
-}
-```
-
-相对定位元素经常被用来作为绝对定位元素的容器块。
-
-### absolute 定位
-
-绝对定位的元素的位置相对于最近的已定位父元素，如果元素没有已定位的父元素，那么它的位置相对于<html>:
-
-```css
-h2
-{
-    position:absolute;
-    left:100px;
-    top:150px;
-}
-```
-
-bsolute 定位使元素的位置与文档流无关，因此不占据空间。
-
-absolute 定位的元素和其他元素重叠。
-
-### sticky 定位
-
-sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。
-
-**`position: sticky;`** 基于用户的滚动位置来定位。
-
-粘性定位的元素是依赖于用户的滚动，在 **`position:relative`** 与 **`position:fixed`** 定位之间切换。
-
-它的行为就像 **`position:relative;`** 而当页面滚动超出目标区域时，它的表现就像 **`position:fixed;`**，它会固定在目标位置。
-
-元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
-
-这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
-
-**注意**： Internet Explorer, Edge 15 及更早 IE 版本不支持 sticky 定位。 Safari 需要使用 -webkit- prefix (查看以下实例)。
-
-```css
-div.sticky {
-    position: -webkit-sticky; /* Safari */
-    position: sticky;
-    top: 0;
-    background-color: green;
-    border: 2px solid #4CAF50;
-}
-```
-
-### z-index 重叠的元素
-
-元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素
-
-z-index属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）
-
-一个元素可以有正数或负数的堆叠顺序：
-
-```css
-img
-{
-    position:absolute;
-    left:0px;
-    top:0px;
-    z-index:-1;
-}
-```
-
-具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面。
-
-**注意**： 如果两个定位元素重叠，没有指定z - index，最后定位在HTML代码中的元素将被显示在最前面。
-
-### --CSS 定位属性
-
-"CSS" 列中的数字表示哪个CSS(CSS1 或者CSS2)版本定义了该属性。
-
-| 属性       | 说明                                                         | 值                                                           | CSS  |
-| :--------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :--- |
-| bottom     | 定义了定位元素下外边距边界与其包含块下边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
-| clip       | 剪辑一个绝对定位的元素                                       | `shape` `auto` `inherit`                                     | 2    |
-| cursor     | 显示光标移动到指定的类型                                     | `url` `auto` `crosshair` `default` `pointer` `move` `e-resize` `ne-resize ` `nw-resize` `n-resize` `se-resize` `sw-resize` `s-resize` `w-resize` `text` `wait` `help` | 2    |
-| left       | 定义了定位元素左外边距边界与其包含块左边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
-| overflow   | 设置当元素的内容溢出其区域时发生的事情。                     | `auto` `hidden` `scroll` `visible` `inherit`                 | 2    |
-| overflow-y | 指定如何处理顶部/底部边缘的内容溢出元素的内容区域            | `auto` `hidden` `scroll` `visible` `no-display` `no-content` | 2    |
-| overflow-x | 指定如何处理右边/左边边缘的内容溢出元素的内容区域            | `auto` `hidden` `scroll` `visible` `no-display` `no-content` | 2    |
-| position   | 指定元素的定位类型                                           | `absolute` `fixed` `relative` `static` `inherit`             | 2    |
-| right      | 定义了定位元素右外边距边界与其包含块右边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
-| top        | 定义了一个定位元素的上外边距边界与其包含块上边界之间的偏移。 | `auto` `length` `%` `inherit`                                | 2    |
-| z-index    | 设置元素的堆叠顺序                                           | `number` `auto` `inherit`                                    | 2    |
-
-## 19.CSS  Overflow(布局)
-
-CSS overflow 属性用于控制内容溢出元素框时显示的方式。
-
-CSS overflow 属性可以控制内容溢出元素框时在对应的元素区间内添加滚动条。
-
-overflow属性有以下值：
-
-| 值      | 描述                                                     |
-| :------ | :------------------------------------------------------- |
-| visible | 默认值。内容不会被修剪，会呈现在元素框之外。             |
-| hidden  | 内容会被修剪，并且其余内容是不可见的。                   |
-| scroll  | 内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。 |
-| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。 |
-| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
-
-**注意**：overflow 属性只工作于指定高度的块元素上。
-
-**注意**： 在 OS X Lion ( Mac 系统) 系统上，滚动条默认是隐藏的，使用的时候才会显示 (设置 "overflow:scroll" 也是一样的)。
-
-### overflow: visible
-
-默认情况下，overflow 的值为 visible， 意思是内容溢出元素框。
-
-```css
-div {
-    width: 200px;
-    height: 50px;
-    background-color: #eee;
-    overflow: visible;
-}
-```
-
-## 20.CSS Float(浮动)
-
-CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元素也会重新排列。
-
-Float（浮动），往往是用于图像，但它在布局时一样非常有用。
-
-### 元素怎样浮动
-
-元素的水平方向浮动，意味着元素只能左右移动而不能上下移动。
-
-一个浮动元素会尽量向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。
-
-浮动元素之后的元素将围绕它。
-
-浮动元素之前的元素将不会受到影响。
-
-如果图像是右浮动，下面的文本流将环绕在它左边：
-
-```css
-img
-{
-    float:right;
-}
-```
-
-### 彼此相邻的浮动元素
-
-如果你把几个浮动的元素放到一起，如果有空间的话，它们将彼此相邻。
-
-在这里，我们对图片廊使用 float 属性：
-
-```css
-.thumbnail 
-{
-    float:left;
-    width:110px;
-    height:90px;
-    margin:5px;
-}
-```
-
-### 清除浮动 - 使用 clear
-
-元素浮动之后，周围的元素会重新排列，为了避免这种情况，使用 clear 属性。
-
-clear 属性指定元素两侧不能出现浮动元素。
-
-使用 clear 属性往文本中添加图片廊：
-
-```css
-.text_line
-{
-    clear:both;
-}
-```
-
-### --CSS 浮动属性
-
-"CSS" 列中的数字表示不同的 CSS 版本（CSS1 或 CSS2）定义了该属性。
-
-| 属性  | 描述                               | 值                                     | CSS  |
-| :---- | :--------------------------------- | :------------------------------------- | :--- |
-| clear | 指定不允许元素周围有浮动元素。     | `left` `right` `both` `none` `inherit` | 1    |
-| float | 指定一个盒子（元素）是否可以浮动。 | `left` `right` `none` `inherit`        | 1    |
-
-## 21.CSS对齐
-
-### 元素居中对齐
-
-要水平居中对齐一个元素(如 `<div>`), 可以使用 **`margin: auto;`**。
-
-设置到元素的宽度将防止它溢出到容器的边缘。
-
-元素通过指定宽度，并将两边的空外边距平均分配：
-
-```css
-.center {
-    margin: auto;
-    width: 50%;
-    border: 3px solid green;
-    padding: 10px;
-}
-```
-
-**注意**： 如果没有设置 **width** 属性(或者设置 100%)，居中对齐将不起作用。
-
-### 文本居中对齐
-
-如果仅仅是为了文本在元素内居中对齐，可以使用 **`text-align: center;`**
-
-```css
-.center {
-    text-align: center;
-    border: 3px solid green;
-}
-```
-
-### 图片居中对齐
-
-要让图片居中对齐, 可以使用 **`margin: auto;`** 并将它放到 **`块`** 元素中:
-
-```css
-img {
-    display: block;
-    margin: auto;
-    width: 40%;
-}
-```
-
-### 左右对齐 - 使用定位方式
-
-我们可以使用 **`position: absolute;`** 属性来对齐元素:
-
-```css
-.right {
-    position: absolute;
-    right: 0px;
-    width: 300px;
-    border: 3px solid #73AD21;
-    padding: 10px;
-}
-```
-
-注释：绝对定位元素会被从正常流中删除，并且能够交叠元素。
-
-**提示**： 当使用 **`position`** 来对齐元素时, 通常 **`<body>`** 元素会设置 **`margin`** 和 **`padding`** 。 这样可以避免在不同的浏览器中出现可见的差异。
-
-当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 `<div class="container">`）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明：
-
-```css
-body {
-    margin: 0;
-    padding: 0;
-}
- 
-.container {
-    position: relative;
-    width: 100%;
-}
- 
-.right {
-    position: absolute;
-    right: 0px;
-    width: 300px;
-    background-color: #b0e0e6;
-}
-```
-
-### 左右对齐 - 使用 float 方式
-
-我们也可以使用 **`float`** 属性来对齐元素:
-
-```css
-.right {
-    float: right;
-    width: 300px;
-    border: 3px solid #73AD21;
-    padding: 10px;
-}
-```
-
-当像这样对齐元素时，对 `<body>` 元素的外边距和内边距进行预定义是一个好主意。这样可以避免在不同的浏览器中出现可见的差异。
-
-> 注意：如果子元素的高度大于父元素，且子元素设置了浮动，那么子元素将溢出，这时候你可以使用 "**clearfix**(清除浮动)" 来解决该问题。
-
-我们可以在父元素上添加 overflow: auto; 来解决子元素溢出的问题:
-
-```css
-.clearfix {
-    overflow: auto;
-}
-```
-
-当使用 float 属性时，IE8 以及更早的版本存在一个问题。如果省略 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 float 属性时，请始终设置 !DOCTYPE 声明：
-
-```css
-body {
-    margin: 0;
-    padding: 0;
-}
- 
-.right {
-    float: right;
-    width: 300px;
-    background-color: #b0e0e6;
-}
-```
-
-### 垂直居中对齐 - 使用 padding
-
-CSS 中有很多方式可以实现垂直居中对齐。 一个简单的方式就是头部顶部使用 **`padding`**:
-
-```css
-.center {
-    padding: 70px 0;
-    border: 3px solid green;
-}
-```
-
-如果要水平和垂直都居中，可以使用 **`padding`** 和 **`text-align: center`**:
-
-```css
-.center {
-    padding: 70px 0;
-    border: 3px solid green;
-    text-align: center;
-}
-```
-
-### 垂直居中 - 使用 line-height
-
-```css
-.center {
-    line-height: 200px;
-    height: 200px;
-    border: 3px solid green;
-    text-align: center;
-}
- 
-/* 如果文本有多行，添加以下代码: */
-.center p {
-    line-height: 1.5;
-    display: inline-block;
-    vertical-align: middle;
-}
-```
-
-### 垂直居中 - 使用 position 和 transform
-
-除了使用 **`padding`** 和 **`line-height`** 属性外,我们还可以使用 **`transform`** 属性来设置垂直居中:
-
-```css
-.center { 
-    height: 200px;
-    position: relative;
-    border: 3px solid green; 
-}
- 
-.center p {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-```
-
-## 22.CSS 组合选择符
+## 16.CSS 组合选择符(包含选择器)
 
 > 组合选择符说明了两个选择器之间的关系。
 
@@ -3575,11 +3298,113 @@ div~p
 }
 ```
 
-## 23.CSS 伪类
+### 分组选择器
+
+```css
+h1,h2,p
+{
+    color:green;
+}
+```
+
+为了尽量减少代码，你可以使用分组选择器。
+
+每个选择器用逗号分隔。
+
+## 17.CSS 属性选择器
+
+CSS 属性选择器用于根据元素的属性或属性值来选择 HTML 元素。
+
+属性选择器可以帮助你在不需要为元素添加类或 ID 的情况下对其进行样式化。
+
+**注意：**IE7 和 IE8 需声明 **!DOCTYPE** 才支持属性选择器！IE6 和更低的版本不支持属性选择器。
+
+以下是常见的 CSS 属性选择器：
+
+**1、[attribute]**
+
+选择带有指定属性的所有元素（无论属性值是什么）。
+
+```css
+/* 选择所有具有 `type` 属性的元素 */
+[type] {
+  border: 1px solid red;
+}
+```
+
+**2、[attribute="value"]**
+
+选择具有指定属性和值完全匹配的元素。
+
+```css
+/* 选择所有 `type` 属性等于 `text` 的元素 */
+[type="text"] {
+  background-color: yellow;
+}
+```
+
+**3、[attribute~="value"]**
+
+选择属性值中包含指定词（用空格分隔的词列表之一）的元素。
+
+```css
+/* 选择属性值中包含 `button` 的元素 */
+[class~="button"] {
+  font-weight: bold;
+}
+```
+
+**4、[attribute|="value"]**
+
+选择具有指定值或者以指定值开头并紧跟着连字符 - 的属性值的元素，常用于语言代码。
+
+```css
+/* 选择所有 `lang` 属性是 `en` 或者以 `en-` 开头的元素 */
+[lang|="en"] {
+  color: green;
+}
+```
+
+**5、[attribute^="value"]**
+
+选择属性值以指定值开头的元素。
+
+```css
+/* 选择所有 `href` 属性以 `https` 开头的链接 */
+[href^="https"] {
+  text-decoration: none;
+}
+```
+
+**6、[attribute$="value"]**
+
+选择属性值以指定值结尾的元素。
+
+```css
+/* 选择所有 src 属性以 .jpg 结尾的图片 */
+[src$=".jpg"] {
+  border: 2px solid blue;
+}
+```
+
+**7、[attribute*="value"]**
+
+选择属性值中包含指定值的元素。
+
+```css
+/* 选择所有 `title` 属性中包含 `tutorial` 的元素 */
+[title*="tutorial"] {
+  font-style: italic;
+}
+```
+
+通过属性选择器，你可以轻松选择元素并基于它们的属性设置特定样式，增加了灵活性和可维护性。
+
+## 18.CSS 伪类选择器
 
 CSS伪类是用来添加一些选择器的特殊效果。
 
-**1.语法**
+### **1.语法**
 
 伪类的语法：
 
@@ -3593,7 +3418,7 @@ CSS类也可以使用伪类：
 selector.class:pseudo-class {property:value;}
 ```
 
-**2.anchor伪类**
+### **2.链接伪类选择器**
 
 在支持 CSS 的浏览器中，链接的不同状态都可以以不同的方式显示
 
@@ -3604,25 +3429,38 @@ a:hover {color:#FF00FF;} /* 鼠标划过链接 */
 a:active {color:#0000FF;} /* 已选中的链接 */
 ```
 
-**注意**： 在CSS定义中，a:hover 必须被置于 a:link 和 a:visited 之后，才是有效的。
+**注意**：
 
-**注意**： 在 CSS 定义中，a:active 必须被置于 a:hover 之后，才是有效的。
-
-**注意**：伪类的名称不区分大小写。
-
-**3.伪类和CSS类**
-
-伪类可以与 CSS 类配合使用：
+1. 伪类的名称不区分大小写。
+2. 为了确保生效，请按照LVHA的顺序进行书写。
+3. 实际开发中的写法
 
 ```css
-a.red:visited {color:#FF0000;}
- 
-<a class="red" href="css-syntax.html">CSS 语法</a>
+a{
+	color:grey;
+}
+a:hover{
+	color:red;
+}
 ```
 
-如果在上面的例子的链接已被访问，它会显示为红色。
 
-**4.CSS :first-child 伪类**
+
+### 3.:focus伪类选择器
+
+:focus伪类选择器用于选取获得焦点的表单元素
+
+焦点就是光标，一般情况`<input>`类表单元素才能获取，因此这个选择器也主要针对于表单元素来说。
+
+```css
+input:focus{
+	background-color:yellow;
+}
+```
+
+
+
+### **4.CSS :first-child 伪类**
 
 您可以使用 :first-child 伪类来选择父元素的第一个子元素。
 
@@ -3661,7 +3499,7 @@ p:first-child i
 }
 ```
 
-**5.CSS - :lang 伪类**
+### **5.CSS :lang 伪类**
 
 :lang 伪类使你有能力为不同的语言定义特殊的规则
 
@@ -3675,45 +3513,47 @@ q:lang(no) {quotes: "~" "~";}
 
 ### --CSS 伪类/元素
 
-| 选择器               | 示例                  | 示例说明                                        |
-| :------------------- | :-------------------- | :---------------------------------------------- |
-| :checked             | input:checked         | 选择所有选中的表单元素                          |
-| :disabled            | input:disabled        | 选择所有禁用的表单元素                          |
-| :empty               | p:empty               | 选择所有没有子元素的p元素                       |
-| :enabled             | input:enabled         | 选择所有启用的表单元素                          |
-| :first-of-type       | p:first-of-type       | 选择的每个 p 元素是其父元素的第一个 p 元素      |
-| :in-range            | input:in-range        | 选择元素指定范围内的值                          |
-| :invalid             | input:invalid         | 选择所有无效的元素                              |
-| :last-child          | p:last-child          | 选择所有p元素的最后一个子元素                   |
-| :last-of-type        | p:last-of-type        | 选择每个p元素是其母元素的最后一个p元素          |
-| :not(selector)       | :not(p)               | 选择所有p以外的元素                             |
-| :nth-child(n)        | p:nth-child(2)        | 选择所有 p 元素的父元素的第二个子元素           |
-| :nth-last-child(n)   | p:nth-last-child(2)   | 选择所有p元素倒数的第二个子元素                 |
-| :nth-last-of-type(n) | p:nth-last-of-type(2) | 选择所有p元素倒数的第二个为p的子元素            |
-| :nth-of-type(n)      | p:nth-of-type(2)      | 选择所有p元素第二个为p的子元素                  |
-| :only-of-type        | p:only-of-type        | 选择所有仅有一个子元素为p的元素                 |
-| :only-child          | p:only-child          | 选择所有仅有一个子元素的p元素                   |
-| :optional            | input:optional        | 选择没有"required"的元素属性                    |
-| :out-of-range        | input:out-of-range    | 选择指定范围以外的值的元素属性                  |
-| :read-only           | input:read-only       | 选择只读属性的元素属性                          |
-| :read-write          | input:read-write      | 选择没有只读属性的元素属性                      |
-| :required            | input:required        | 选择有"required"属性指定的元素属性              |
-| :root                | root                  | 选择文档的根元素                                |
-| :target              | #news:target          | 选择当前活动#news元素(点击URL包含锚的名字)      |
-| :valid               | input:valid           | 选择所有有效值的属性                            |
-| :link                | a:link                | 选择所有未访问链接                              |
-| :visited             | a:visited             | 选择所有访问过的链接                            |
-| :active              | a:active              | 选择正在活动链接                                |
-| :hover               | a:hover               | 把鼠标放在链接上的状态                          |
-| :focus               | input:focus           | 选择元素输入后具有焦点                          |
-| :first-letter        | p:first-letter        | 选择每个<p> 元素的第一个字母                    |
-| :first-line          | p:first-line          | 选择每个<p> 元素的第一行                        |
-| :first-child         | p:first-child         | 选择器匹配属于任意元素的第一个子元素的 <p> 元素 |
-| :before              | p:before              | 在每个<p>元素之前插入内容                       |
-| :after               | p:after               | 在每个<p>元素之后插入内容                       |
-| :lang(*language*)    | p:lang(it)            | 为<p>元素的lang属性选择一个开始值               |
+| 选择器               | 示例                  | 示例说明                                          |
+| :------------------- | :-------------------- | :------------------------------------------------ |
+| :checked             | input:checked         | 选择所有选中的表单元素                            |
+| :disabled            | input:disabled        | 选择所有禁用的表单元素                            |
+| :empty               | p:empty               | 选择所有没有子元素的p元素                         |
+| :enabled             | input:enabled         | 选择所有启用的表单元素                            |
+| :first-of-type       | p:first-of-type       | 选择的每个 p 元素是其父元素的第一个 p 元素        |
+| :in-range            | input:in-range        | 选择元素指定范围内的值                            |
+| :invalid             | input:invalid         | 选择所有无效的元素                                |
+| :last-child          | p:last-child          | 选择所有p元素的最后一个子元素                     |
+| :last-of-type        | p:last-of-type        | 选择每个p元素是其母元素的最后一个p元素            |
+| :not(selector)       | :not(p)               | 选择所有p以外的元素                               |
+| :nth-child(n)        | p:nth-child(2)        | 选择所有 p 元素的父元素的第二个子元素             |
+| :nth-last-child(n)   | p:nth-last-child(2)   | 选择所有p元素倒数的第二个子元素                   |
+| :nth-last-of-type(n) | p:nth-last-of-type(2) | 选择所有p元素倒数的第二个为p的子元素              |
+| :nth-of-type(n)      | p:nth-of-type(2)      | 选择所有p元素第二个为p的子元素                    |
+| :only-of-type        | p:only-of-type        | 选择所有仅有一个子元素为p的元素                   |
+| :only-child          | p:only-child          | 选择所有仅有一个子元素的p元素                     |
+| :optional            | input:optional        | 选择没有"required"的元素属性                      |
+| :out-of-range        | input:out-of-range    | 选择指定范围以外的值的元素属性                    |
+| :read-only           | input:read-only       | 选择只读属性的元素属性                            |
+| :read-write          | input:read-write      | 选择没有只读属性的元素属性                        |
+| :required            | input:required        | 选择有"required"属性指定的元素属性                |
+| :root                | root                  | 选择文档的根元素                                  |
+| :target              | #news:target          | 选择当前活动#news元素(点击URL包含锚的名字)        |
+| :valid               | input:valid           | 选择所有有效值的属性                              |
+| :link                | a:link                | 选择所有未访问链接                                |
+| :visited             | a:visited             | 选择所有访问过的链接                              |
+| :active              | a:active              | 选择正在活动链接                                  |
+| :hover               | a:hover               | 把鼠标放在链接上的状态                            |
+| :focus               | input:focus           | 选择元素输入后具有焦点                            |
+| :first-letter        | p:first-letter        | 选择每个`<p>` 元素的第一个字母                    |
+| :first-line          | p:first-line          | 选择每个`<p> `元素的第一行                        |
+| :first-child         | p:first-child         | 选择器匹配属于任意元素的第一个子元素的 `<p> `元素 |
+| :before              | p:before              | 在每个`<p>`元素之前插入内容                       |
+| :after               | p:after               | 在每个`<p>`元素之后插入内容                       |
+| :lang(*language*)    | p:lang(it)            | 为`<p>`元素的lang属性选择一个开始值               |
 
-## 24.CSS 伪元素
+
+
+## 19.CSS 伪元素选择器
 
 CSS 伪元素是一种特殊的选择器，它可以在不改变 HTML 结构的情况下对页面元素的特定部分进行样式设置。
 
@@ -3872,7 +3712,524 @@ h1:after
 | :after            | p:after        | 在每个`<p>`元素之后插入内容                       |
 | :lang(*language*) | p:lang(it)     | 为`<p>`元素的lang属性选择一个开始值               |
 
-## 25.CSS 导航栏
+## 20.CSS  Dimension
+
+CSS 尺寸 (Dimension) 属性允许你控制元素的高度和宽度。同样，它允许你增加行间距。
+
+### --CSS 尺寸属性
+
+| 属性        | 描述                 |
+| :---------- | :------------------- |
+| height      | 设置元素的高度。     |
+| line-height | 设置行高。           |
+| max-height  | 设置元素的最大高度。 |
+| max-width   | 设置元素的最大宽度。 |
+| min-height  | 设置元素的最小高度。 |
+| min-width   | 设置元素的最小宽度。 |
+| width       | 设置元素的宽度。     |
+
+
+
+## 21.CSS Display与 Visibility
+
+display属性设置一个元素应如何显示，visibility属性指定一个元素应可见还是隐藏。
+
+### 隐藏元素 visibility:hidden
+
+隐藏一个元素可以通过把display属性设置为"none"，或把visibility属性设置为"hidden"。但是请注意，这两种方法会产生不同的结果。
+
+visibility:hidden可以隐藏某个元素，但隐藏的元素仍需占用与未隐藏之前一样的空间。也就是说，该元素虽然被隐藏了，但仍然会影响布局。
+
+```css
+h1.hidden {visibility:hidden;}
+```
+
+### 隐藏元素 display:none
+
+display:none可以隐藏某个元素，且隐藏的元素不会占用任何空间。也就是说，该元素不但被隐藏了，而且该元素原本占用的空间也会从页面布局中消失。
+
+```css
+h1.hidden {display:none;}
+```
+
+### 块和内联元素
+
+块元素是一个元素，占用了全部宽度，在前后都是换行符。
+
+块元素的例子：
+
+- `<h1>`
+- `<p>`
+- `<div>`
+
+内联元素只需要必要的宽度，不强制换行。
+
+内联元素的例子：
+
+- `<span>`
+- `<a>`
+
+### 元素显示模式的改变
+
+可以更改内联元素和块元素，反之亦然，可以使页面看起来是以一种特定的方式组合，并仍然遵循web标准。
+
+下面的示例把列表项显示为内联元素：
+
+```css
+li {display:inline;}
+```
+
+下面的示例把span元素作为块元素：
+
+```css
+span {display:block;}
+```
+
+**注意：**变更元素的显示类型看该元素是如何显示，它是什么样的元素。例如：一个内联元素设置为display:block是不允许有它内部的嵌套块元素。
+
+## 22.CSS Position
+
+position 属性指定了元素的定位类型。
+
+position 属性的五个值：
+
+- static
+- relative
+- fixed
+- absolute
+- sticky
+
+元素可以使用的顶部，底部，左侧和右侧属性定位。然而，这些属性无法工作，除非事先设定position属性。他们也有不同的工作方式，这取决于定位方法。
+
+**1.static 定位**
+
+HTML 元素的默认值，即没有定位，遵循正常的文档流对象。
+
+静态定位的元素不会受到 top, bottom, left, right影响。
+
+```css
+div.static {
+    position: static;
+    border: 3px solid #73AD21;
+}
+```
+
+**2.fixed 定位**
+
+元素的位置相对于浏览器窗口是固定位置。
+
+即使窗口是滚动的它也不会移动：
+
+```css
+p.pos_fixed
+{
+    position:fixed;
+    top:30px;
+    right:5px;
+}
+```
+
+**注意**： Fixed 定位在 IE7 和 IE8 下需要描述 !DOCTYPE 才能支持。
+
+Fixed定位使元素的位置与文档流无关，因此不占据空间。
+
+Fixed定位的元素和其他元素重叠。
+
+**3.relative 定位**
+
+相对定位元素的定位是相对其正常位置。
+
+```css
+h2.pos_left
+{
+    position:relative;
+    left:-20px;
+}
+h2.pos_right
+{
+    position:relative;
+    left:20px;
+}
+```
+
+移动相对定位元素，但它原本所占的空间不会改变。
+
+```css
+h2.pos_top
+{
+    position:relative;
+    top:-50px;
+}
+```
+
+相对定位元素经常被用来作为绝对定位元素的容器块。
+
+**4.absolute 定位**
+
+绝对定位的元素的位置相对于最近的已定位父元素，如果元素没有已定位的父元素，那么它的位置相对于<html>:
+
+```css
+h2
+{
+    position:absolute;
+    left:100px;
+    top:150px;
+}
+```
+
+bsolute 定位使元素的位置与文档流无关，因此不占据空间。
+
+absolute 定位的元素和其他元素重叠。
+
+**5.sticky 定位**
+
+sticky 英文字面意思是粘，粘贴，所以可以把它称之为粘性定位。
+
+**`position: sticky;`** 基于用户的滚动位置来定位。
+
+粘性定位的元素是依赖于用户的滚动，在 **`position:relative`** 与 **`position:fixed`** 定位之间切换。
+
+它的行为就像 **`position:relative;`** 而当页面滚动超出目标区域时，它的表现就像 **`position:fixed;`**，它会固定在目标位置。
+
+元素定位表现为在跨越特定阈值前为相对定位，之后为固定定位。
+
+这个特定阈值指的是 top, right, bottom 或 left 之一，换言之，指定 top, right, bottom 或 left 四个阈值其中之一，才可使粘性定位生效。否则其行为与相对定位相同。
+
+**注意**： Internet Explorer, Edge 15 及更早 IE 版本不支持 sticky 定位。 Safari 需要使用 -webkit- prefix (查看以下实例)。
+
+```css
+div.sticky {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    background-color: green;
+    border: 2px solid #4CAF50;
+}
+```
+
+### 重叠的元素
+
+元素的定位与文档流无关，所以它们可以覆盖页面上的其它元素
+
+`z-index`属性指定了一个元素的堆叠顺序（哪个元素应该放在前面，或后面）
+
+一个元素可以有正数或负数的堆叠顺序：
+
+```css
+img
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+    z-index:-1;
+}
+```
+
+具有更高堆叠顺序的元素总是在较低的堆叠顺序元素的前面。
+
+**注意**： 如果两个定位元素重叠，没有指定z - index，最后定位在HTML代码中的元素将被显示在最前面。
+
+### --CSS 定位属性
+
+"CSS" 列中的数字表示哪个CSS(CSS1 或者CSS2)版本定义了该属性。
+
+| 属性       | 说明                                                         | 值                                                           | CSS  |
+| :--------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :--- |
+| bottom     | 定义了定位元素下外边距边界与其包含块下边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
+| clip       | 剪辑一个绝对定位的元素                                       | `shape` `auto` `inherit`                                     | 2    |
+| cursor     | 显示光标移动到指定的类型                                     | `url` `auto` `crosshair` `default` `pointer` `move` `e-resize` `ne-resize ` `nw-resize` `n-resize` `se-resize` `sw-resize` `s-resize` `w-resize` `text` `wait` `help` | 2    |
+| left       | 定义了定位元素左外边距边界与其包含块左边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
+| overflow   | 设置当元素的内容溢出其区域时发生的事情。                     | `auto` `hidden` `scroll` `visible` `inherit`                 | 2    |
+| overflow-y | 指定如何处理顶部/底部边缘的内容溢出元素的内容区域            | `auto` `hidden` `scroll` `visible` `no-display` `no-content` | 2    |
+| overflow-x | 指定如何处理右边/左边边缘的内容溢出元素的内容区域            | `auto` `hidden` `scroll` `visible` `no-display` `no-content` | 2    |
+| position   | 指定元素的定位类型                                           | `absolute` `fixed` `relative` `static` `inherit`             | 2    |
+| right      | 定义了定位元素右外边距边界与其包含块右边界之间的偏移。       | `auto` `length` `%` `inherit`                                | 2    |
+| top        | 定义了一个定位元素的上外边距边界与其包含块上边界之间的偏移。 | `auto` `length` `%` `inherit`                                | 2    |
+| z-index    | 设置元素的堆叠顺序                                           | `number` `auto` `inherit`                                    | 2    |
+
+## 23.CSS  Overflow
+
+CSS overflow 属性用于控制内容溢出元素框时显示的方式。
+
+CSS overflow 属性可以控制内容溢出元素框时在对应的元素区间内添加滚动条。
+
+overflow属性有以下值：
+
+| 值      | 描述                                                     |
+| :------ | :------------------------------------------------------- |
+| visible | 默认值。内容不会被修剪，会呈现在元素框之外。             |
+| hidden  | 内容会被修剪，并且其余内容是不可见的。                   |
+| scroll  | 内容会被修剪，但是浏览器会显示滚动条以便查看其余的内容。 |
+| auto    | 如果内容被修剪，则浏览器会显示滚动条以便查看其余的内容。 |
+| inherit | 规定应该从父元素继承 overflow 属性的值。                 |
+
+**注意**：overflow 属性只工作于指定高度的块元素上。
+
+**注意**： 在 OS X Lion ( Mac 系统) 系统上，滚动条默认是隐藏的，使用的时候才会显示 (设置 "overflow:scroll" 也是一样的)。
+
+### visible
+
+默认情况下，overflow 的值为 visible， 意思是内容溢出元素框。
+
+```css
+div {
+    width: 200px;
+    height: 50px;
+    background-color: #eee;
+    overflow: visible;
+}
+```
+
+## 24.CSS Float
+
+CSS 的 Float（浮动），会使元素向左或向右移动，其周围的元素也会重新排列。
+
+Float（浮动），往往是用于图像，但它在布局时一样非常有用。
+
+元素的水平方向浮动，意味着元素只能左右移动而不能上下移动。
+
+一个浮动元素会尽量向左或向右移动，直到它的外边缘碰到包含框或另一个浮动框的边框为止。
+
+浮动元素之后的元素将围绕它。
+
+浮动元素之前的元素将不会受到影响。
+
+如果图像是右浮动，下面的文本流将环绕在它左边：
+
+```css
+img
+{
+    float:right;
+}
+```
+
+如果你把几个浮动的元素放到一起，如果有空间的话，它们将彼此相邻。
+
+在这里，我们对图片廊使用 float 属性：
+
+```css
+.thumbnail 
+{
+    float:left;
+    width:110px;
+    height:90px;
+    margin:5px;
+}
+```
+
+### `clear`属性
+
+元素浮动之后，周围的元素会重新排列，为了避免这种情况，使用 clear 属性。
+
+clear 属性指定元素两侧不能出现浮动元素。
+
+使用 clear 属性往文本中添加图片廊：
+
+```css
+.text_line
+{
+    clear:both;
+}
+```
+
+### --CSS 浮动属性
+
+"CSS" 列中的数字表示不同的 CSS 版本（CSS1 或 CSS2）定义了该属性。
+
+| 属性  | 描述                               | 值                                     | CSS  |
+| :---- | :--------------------------------- | :------------------------------------- | :--- |
+| clear | 指定不允许元素周围有浮动元素。     | `left` `right` `both` `none` `inherit` | 1    |
+| float | 指定一个盒子（元素）是否可以浮动。 | `left` `right` `none` `inherit`        | 1    |
+
+## 25.CSS对齐
+
+### 元素居中对齐
+
+要水平居中对齐一个元素(如 `<div>`), 可以使用 **`margin: auto;`**。
+
+设置到元素的宽度将防止它溢出到容器的边缘。
+
+元素通过指定宽度，并将两边的空外边距平均分配：
+
+```css
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+}
+```
+
+**注意**： 如果没有设置 **width** 属性(或者设置 100%)，居中对齐将不起作用。
+
+### 文本居中对齐
+
+如果仅仅是为了文本在元素内居中对齐，可以使用 **`text-align: center;`**
+
+```css
+.center {
+    text-align: center;
+    border: 3px solid green;
+}
+```
+
+### 图片居中对齐
+
+要让图片居中对齐, 可以使用 **`margin: auto;`** 并将它放到 **`块`** 元素中:
+
+```css
+img {
+    display: block;
+    margin: auto;
+    width: 40%;
+}
+```
+
+### 左右对齐 
+
+**1.使用定位方式**
+
+我们可以使用 **`position: absolute;`** 属性来对齐元素:
+
+```css
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+```
+
+注释：绝对定位元素会被从正常流中删除，并且能够交叠元素。
+
+**提示**： 当使用 **`position`** 来对齐元素时, 通常 **`<body>`** 元素会设置 **`margin`** 和 **`padding`** 。 这样可以避免在不同的浏览器中出现可见的差异。
+
+当使用 position 属性时，IE8 以及更早的版本存在一个问题。如果容器元素（在我们的案例中是 `<div class="container">`）设置了指定的宽度，并且省略了 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 position 属性时，请始终设置 !DOCTYPE 声明：
+
+```css
+body {
+    margin: 0;
+    padding: 0;
+}
+ 
+.container {
+    position: relative;
+    width: 100%;
+}
+ 
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    background-color: #b0e0e6;
+}
+```
+
+**2.使用 float 方式**
+
+我们也可以使用 **`float`** 属性来对齐元素:
+
+```css
+.right {
+    float: right;
+    width: 300px;
+    border: 3px solid #73AD21;
+    padding: 10px;
+}
+```
+
+当像这样对齐元素时，对 `<body>` 元素的外边距和内边距进行预定义是一个好主意。这样可以避免在不同的浏览器中出现可见的差异。
+
+> 注意：如果子元素的高度大于父元素，且子元素设置了浮动，那么子元素将溢出，这时候你可以使用 "**clearfix**(清除浮动)" 来解决该问题。
+
+我们可以在父元素上添加 overflow: auto; 来解决子元素溢出的问题:
+
+```css
+.clearfix {
+    overflow: auto;
+}
+```
+
+当使用 float 属性时，IE8 以及更早的版本存在一个问题。如果省略 !DOCTYPE 声明，那么 IE8 以及更早的版本会在右侧增加 17px 的外边距。这似乎是为滚动条预留的空间。当使用 float 属性时，请始终设置 !DOCTYPE 声明：
+
+```css
+body {
+    margin: 0;
+    padding: 0;
+}
+ 
+.right {
+    float: right;
+    width: 300px;
+    background-color: #b0e0e6;
+}
+```
+
+### 垂直居中对齐 
+
+**1.使用 `padding`**
+
+CSS 中有很多方式可以实现垂直居中对齐。 一个简单的方式就是头部顶部使用 **`padding`**:
+
+```css
+.center {
+    padding: 70px 0;
+    border: 3px solid green;
+}
+```
+
+如果要水平和垂直都居中，可以使用 **`padding`** 和 **`text-align: center`**:
+
+```css
+.center {
+    padding: 70px 0;
+    border: 3px solid green;
+    text-align: center;
+}
+```
+
+**2.使用 `line-height`**
+
+```css
+.center {
+    line-height: 200px;
+    height: 200px;
+    border: 3px solid green;
+    text-align: center;
+}
+ 
+/* 如果文本有多行，添加以下代码: */
+.center p {
+    line-height: 1.5;
+    display: inline-block;
+    vertical-align: middle;
+}
+```
+
+**3.使用 `position` 和 `transform`**
+
+除了使用 **`padding`** 和 **`line-height`** 属性外,我们还可以使用 **`transform`** 属性来设置垂直居中:
+
+```css
+.center { 
+    height: 200px;
+    position: relative;
+    border: 3px solid green; 
+}
+ 
+.center p {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+```
+
+
+
+## 26.CSS 导航栏
 
 熟练使用导航栏，对于任何网站都非常重要。
 
@@ -4039,7 +4396,7 @@ li a:hover {
 }
 ```
 
-## 26.CSS 下拉菜单
+## 27.CSS 下拉菜单
 
 ### 基本下拉菜单
 
@@ -4184,3 +4541,574 @@ li a:hover {
 </html>
 ```
 
+## 28.CSS 提示工具
+
+提示工具在鼠标移动到指定元素后触发。
+
+### 基础提示框
+
+提示框在鼠标移动到指定元素上显示：
+
+```css
+<style>/* Tooltip 容器 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* 悬停元素上显示点线 */
+}
+ 
+/* Tooltip 文本 */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* 定位 */
+    position: absolute;
+    z-index: 1;
+}
+ 
+/* 鼠标移动上去后显示提示框 */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}</style>
+ 
+<div class="tooltip">鼠标移动到这
+  <span class="tooltiptext">提示文本</span>
+</div>
+```
+
+**实例解析**
+
+**HTML)** 使用容器元素 (like `<div>`) 并添加 **"tooltip"** 类。在鼠标移动到 `<div>` 上时显示提示信息。
+
+提示文本放在内联元素上(如 `<span>`) 并使用**class="tooltiptext"**。
+
+**CSS) ** **tooltip** 类使用 **position:relative**, 提示文本需要设置定位值 **position:absolute**。 **注意:** 接下来的实例会显示更多的定位效果。
+
+**tooltiptext** 类用于实际的提示文本。模式是隐藏的，在鼠标移动到元素显示 。设置了一些宽度、背景色、字体色等样式。
+
+CSS3  **border-radius** 属性用于为提示框添加圆角。
+
+**:hover** 选择器用于在鼠标移动到到指定元素 `<div> `上时显示的提示。
+
+------
+
+### 定位提示工具
+
+以下实例中，提示工具显示在指定元素的右侧(**left:105%**) 。
+
+注意 **top:-5px** 同于定位在容器元素的中间。使用数字 **5** 因为提示文本的顶部和底部的内边距（padding）是 5px。
+
+如果你修改 padding 的值，top 值也要对应修改，这样才可以确保它是居中对齐的。
+
+在提示框显示在左边的情况也是这个原理。
+
+**1.显示在右侧**
+
+```css
+.tooltip .tooltiptext {
+    top: -5px;
+    left: 105%; 
+}
+```
+
+**2.显示在左侧**
+
+```css
+.tooltip .tooltiptext {
+    top: -5px;
+    right: 105%; 
+}
+```
+
+**3.显示在头部**
+
+如果你想要提示工具显示在头部和底部。我们需要使用 **margin-left** 属性，并设置为 -60px。 这个数字计算来源是使用宽度的一半来居中对齐，即： width/2 (120/2 = 60)。
+
+```css
+.tooltip .tooltiptext {
+    width: 120px;
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* 使用一半宽度 (120/2 = 60) 来居中提示工具 */
+}
+```
+
+**4.显示在底部**
+
+```css
+.tooltip .tooltiptext {
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px; /* 使用一半宽度 (120/2 = 60) 来居中提示工具 */
+}
+```
+
+### 添加箭头
+
+我们可以用CSS 伪元素 ::after 及 content 属性为提示工具创建一个小箭头标志，箭头是由边框组成的，但组合起来后提示工具像个语音信息框。
+
+以下实例演示了如何为显示在顶部的提示工具添加底部箭头：
+
+**1.顶部提示框/底部箭头：**
+
+```css
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%; /* 提示工具底部 */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+```
+
+**实例解析**:
+
+在提示工具内定位箭头: **top: 100%** , 箭头将显示在提示工具的底部。**left: 50%** 用于居中对齐箭头。
+
+**注意：** **border-width** 属性指定了箭头的大小。如果你修改它，也要修改 **margin-left** 值。这样箭头才能居中显示。
+
+**border-color** 用于将内容转换为箭头。设置顶部边框为黑色，其他是透明的。如果设置了其他的也是黑色则会显示为一个黑色的四边形。
+
+**2.底部提示框/顶部箭头**：
+
+```css
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* 提示工具头部 */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+```
+
+**3.右侧提示框/左侧箭头**：
+
+```css
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* 提示工具左侧 */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+```
+
+**4.左侧提示框/右侧箭头：**
+
+```css
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 100%; /* 提示工具右侧 */
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent transparent black;
+}
+```
+
+### 淡入效果
+
+我们可以使用 CSS3 `transition` 属性及 `opacity` 属性来实现提示工具的淡入效果:
+
+```css
+.tooltip .tooltiptext {
+    opacity: 0;
+    transition: opacity 1s;
+}
+ 
+.tooltip:hover .tooltiptext {
+    opacity: 1;
+}
+```
+
+## 29.CSS 媒体类型
+
+媒体类型允许你指定文件将如何在不同媒体呈现。该文件可以以不同的方式显示在屏幕上，在纸张上，或听觉浏览器等等。 
+
+一些 CSS 属性只设计了某些媒体。例如 **`voice-family`** 属性是专为听觉用户代理。其他一些属性可用于不同的媒体类型。例如， **`font-size`** 属性可用于屏幕和印刷媒体，但有不同的值。屏幕和纸上的文件不同，通常需要一个更大的字体，**`sans-serif`** 字体比较适合在屏幕上阅读，而 **`serif`** 字体更容易在纸上阅读。
+
+------
+
+### @media 规则
+
+@media 规则允许在相同样式表为不同媒体设置不同的样式。
+
+在下面的例子告诉我们浏览器屏幕上显示一个 14 像素的 Verdana 字体样式。但是如果页面打印，将是 10 个像素的 Times 字体。请注意，`font-weight` 在屏幕上和纸上设置为粗体：
+
+```css
+@media screen
+{
+    p.test {font-family:verdana,sans-serif;font-size:14px;}
+}
+@media print
+{
+    p.test {font-family:times,serif;font-size:10px;}
+}
+@media screen,print
+{
+    p.test {font-weight:bold;}
+}
+```
+
+### 其他媒体类型
+
+**注意**：媒体类型名称不区分大小写。
+
+| 媒体类型   | 描述                                                   |
+| :--------- | :----------------------------------------------------- |
+| all        | 用于所有的媒体设备。                                   |
+| aural      | 用于语音和音频合成器。                                 |
+| braille    | 用于盲人用点字法触觉回馈设备。                         |
+| embossed   | 用于分页的盲人用点字法打印机。                         |
+| handheld   | 用于小的手持的设备。                                   |
+| print      | 用于打印机。                                           |
+| projection | 用于方案展示，比如幻灯片。                             |
+| screen     | 用于电脑显示器。                                       |
+| tty        | 用于使用固定密度字母栅格的媒体，比如电传打字机和终端。 |
+| tv         | 用于电视机类型的设备。                                 |
+
+
+
+## 30.CSS 计数器
+
+CSS 计数器通过一个变量来设置，根据规则递增变量。
+
+------
+
+### 使用计数器自动编号
+
+CSS 计数器根据规则来递增变量。
+
+CSS 计数器使用到以下几个属性：
+
+- `counter-reset` - 创建或者重置计数器
+- `counter-increment` - 递增变量
+- `content` - 插入生成的内容
+- `counter()` 或 `counters()` 函数 - 将计数器的值添加到元素
+
+要使用 CSS 计数器，得先用 counter-reset 创建：
+
+以下实例在页面创建一个计数器 (在 body 选择器中)，每个 `<h2>` 元素的计数值都会递增，并在每个 `<h2>` 元素前添加 `"Section <计数值>:"`
+
+```css
+body {
+  counter-reset: section;
+}
+ 
+h2::before {
+  counter-increment: section;
+  content: "Section " counter(section) ": ";
+}
+```
+
+### 嵌套计数器
+
+以下实例在页面创建一个计数器，在每一个 `<h1>` 元素前添加计数值 `"Section <主标题计数值>."`, 嵌套的计数值则放在 `<h2>` 元素的前面，内容为 `"<主标题计数值>.<副标题计数值>":`
+
+```css
+body {
+  counter-reset: section;
+}
+ 
+h1 {
+  counter-reset: subsection;
+}
+ 
+h1::before {
+  counter-increment: section;
+  content: "Section " counter(section) ". ";
+}
+ 
+h2::before {
+  counter-increment: subsection;
+  content: counter(section) "." counter(subsection) " ";
+}
+```
+
+计数器也可用于列表中，列表的子元素会自动创建。这里我们使用了 `counters()` 函数在不同的嵌套层级中插入字符串:
+
+```css
+ol {
+  counter-reset: section;
+  list-style-type: none;
+}
+ 
+li::before {
+  counter-increment: section;
+  content: counters(section,".") " ";
+}
+```
+
+### --CSS 计数器属性
+
+| 属性              | 描述                                                |
+| :---------------- | :-------------------------------------------------- |
+| content           | 使用 ::before 和 ::after 伪元素来插入自动生成的内容 |
+| counter-increment | 递增一个或多个值                                    |
+| counter-reset     | 创建或重置一个或多个计数器                          |
+
+## 31.CSS 网页布局
+
+```css
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>qiqizizzz(qiqizizzz.com)</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+ 
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f1f1f1;
+}
+ 
+/* 头部标题 */
+.header {
+  padding: 30px;
+  text-align: center;
+  background: white;
+}
+ 
+.header h1 {
+  font-size: 50px;
+}
+ 
+/* 导航条 */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+ 
+/* 导航条链接 */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+ 
+/* 链接颜色修改 */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+ 
+/* 创建两列 */
+/* Left column */
+.leftcolumn {   
+  float: left;
+  width: 75%;
+}
+ 
+/* 右侧栏 */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+}
+ 
+/* 图像部分 */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+ 
+/* 文章卡片效果 */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+ 
+/* 列后面清除浮动 */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+ 
+/* 底部 */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+ 
+/* 响应式布局 - 屏幕尺寸小于 800px 时，两列布局改为上下布局 */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+ 
+/* 响应式布局 -屏幕尺寸小于 400px 时，导航等布局改为上下布局 */
+@media screen and (max-width: 400px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>我的网页</h1>
+  <p>重置浏览器大小查看效果。</p>
+</div>
+
+<div class="topnav">
+  <a href="#">链接</a>
+  <a href="#">链接</a>
+  <a href="#">链接</a>
+  <a href="#" style="float:right">链接</a>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>文章标题</h2>
+      <h5>2019 年 4 月 17日</h5>
+      <div class="fakeimg" style="height:200px;">图片</div>
+      <p>一些文本...</p>
+      <p> I'm qiqizizzz.</p>
+    </div>
+    <div class="card">
+      <h2>文章标题</h2>
+      <h5>2019 年 4 月 17日</h5>
+      <div class="fakeimg" style="height:200px;">图片</div>
+      <p>一些文本...</p>
+      <p> I'm qiqizizzz.</p>
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="card">
+      <h2>关于我</h2>
+      <div class="fakeimg" style="height:100px;">图片</div>
+      <p>关于我的一些信息..</p>
+    </div>
+    <div class="card">
+      <h3>热门文章</h3>
+      <div class="fakeimg"><p>图片</p></div>
+      <div class="fakeimg"><p>图片</p></div>
+      <div class="fakeimg"><p>图片</p></div>
+    </div>
+    <div class="card">
+      <h3>关注我</h3>
+      <p>一些文本...</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <h2>底部区域</h2>
+</div>
+
+</body>
+</html>
+```
+
+## 32.CSS !important 规则
+
+CSS 中的 !important 规则用于增加样式的权重。
+
+**!important** 与优先级无关，但它与最终的结果直接相关，使用一个 !important 规则时，此声明将覆盖任何其他声明。
+
+```css
+#myid {
+  background-color: blue;
+}
+ 
+.myclass {
+  background-color: gray;
+}
+ 
+p {
+  background-color: red !important;
+}
+```
+
+以上实例中，尽管 ID 选择器和类选择器具有更高的优先级，但三个段落背景颜色都显示为红色，因为 !important 规则会覆盖 background-color 属性。
+
+**重要说明**
+
+使用 !important 是一个坏习惯，应该尽量避免，因为这破坏了样式表中的固有的级联规则 使得调试找 bug 变得更加困难了。
+
+当两条相互冲突的带有 !important 规则的声明被应用到相同的元素上时，拥有更大优先级的声明将会被采用。
+
+以下实例我们在查看 CSS 源码时就不是很清楚哪种颜色最重要：
+
+```css
+#myid {
+  background-color: blue !important;
+}
+ 
+.myclass {
+  background-color: gray !important;
+}
+ 
+p {
+  background-color: red !important;
+}
+```
+
+**使用建议：**
+
+- **一定**要优先考虑使用样式规则的优先级来解决问题而不是 `!important`
+- **只有**在需要覆盖全站或外部 CSS 的特定页面中使用 `!important`
+- **永远不要**在你的插件中使用 `!important`
+- **永远不要**在全站范围的 CSS 代码中使用 `!important`
+
+### 何时使用 !important
+
+如果要在你的网站上设定一个全站样式的 CSS 样式可以使用 !important。
+
+如果想要设置所有按钮具有相同的外观，我们可以将 !important 规则添加到按钮的样式属性中，如下所示：
+
+```css
+.button {
+  background-color: #8c8c8c !important;
+  color: white !important;
+  padding: 5px !important;
+  border: 1px solid black !important;
+}
+ 
+#myDiv a {
+  color: red;
+  background-color: yellow;
+}
+```
+
+
+
+# 四、CSS3
+
+## 1.CSS3 边框

@@ -2154,3 +2154,94 @@ of方法的形参是一个可变参数，可以传递一些零散的数据，也
 | `static<T>Stream<T>concat(Stream a, Stream b)`     | 合并a和b两个流为一个流               |
 | `Stream<R> map(Function<T ,R> mapper)`             | 转换流中的数据类型                   |
 
+**注意**：
+
+中间方法，返回新的stream流，原来的Stream流只能使用一次，建议使用链式编程。
+
+修改Stream流中的数据，**不会影响原来集合或者数组中的数据。**
+
+> 实例：
+
+```java
+List<String> l=new ArrayList<>();
+l.add("张无忌");
+l.add("周芷若");
+l.add("赵敏");
+l.add("张强");
+l.add("张三丰");
+l.add("张翠山");
+l.add("张良");
+l.add("王二麻子");
+l.add("谢广坤");
+l.add("赵敏");   //增强重复数据以测试去重方法
+l.add("赵敏");
+l.add("赵敏");
+l.add("赵敏");
+//链式编程--使用filter方法
+l.stream()
+     .filter(s->s.startsWith("张"))
+     .filter(s->s.length()==3)
+     .forEach(s->System.out.println(s));
+//使用limit方法、skip方法
+l.stream().limit(4).forEach(s->System.out.println(s));
+l.stream().skip(4).forEach(s->System.out.println(s));
+//使用distinct方法
+l.stream().distinct().forEach(s->System.out.println(s));
+//使用concat方法
+Stream.concat(l.stream(), l.stream()).forEach(s->System.out.print(s+" "));
+```
+
+> 实例2：
+
+```java
+ List<String> l=new ArrayList<>();
+            l.add("张无忌-12");
+            l.add("周芷若-14");
+            l.add("赵敏-16");
+            l.add("张强-18");
+            l.add("张三丰-20");
+            l.add("张翠山-22");
+            l.add("张良-24");
+            l.add("王二麻子-26");
+            l.add("谢广坤-28");
+            l.add("赵敏-30");
+            l.add("赵敏-32");
+            l.add("赵敏-34");
+            l.add("赵敏-24");
+            System.out.println("========================");
+            l.stream()
+                .map(s->Integer.parseInt(s.split("-")[1]))      //"-"作为分隔符
+                .forEach(s->System.out.println(s));
+```
+
+## 3.终结方法
+
+| 名称                          | 说明                       |
+| ----------------------------- | -------------------------- |
+| void forEach(Consumer action) | 遍历                       |
+| long count()                  | 统计                       |
+| toArray()                     | 收集流中的数据，放到数组中 |
+| collect(Collector collector)  | 收集流中的数据，放到集合中 |
+
+实例：
+
+```java
+List<String> l=new ArrayList<>();
+l.add("张无忌");
+l.add("周芷若");
+l.add("赵敏");
+l.add("张强");
+l.add("张三丰");
+l.add("张翠山");
+l.add("张良");
+l.add("王二麻子");
+l.add("谢广坤");
+l.stream().forEach(s->System.out.println(s));             //遍历
+System.out.println("==========================");
+long count=l.stream().count();
+System.out.println(count);                                //统计
+System.out.println("==========================");
+Object[] arr1=l.stream().toArray();                       //收集流中的数据，放在数组中
+System.out.println(Arrays.toString(arr1));
+```
+
