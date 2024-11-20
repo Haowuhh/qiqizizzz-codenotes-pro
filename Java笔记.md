@@ -1828,6 +1828,10 @@ Collection是单列集合的祖宗接口，它的功能是全部单列集合都�
 
 contains方法在底层是依赖equals方法判断对象是否一致的。如果存的是自定义对象(结构体)，没有重写equals方法，那么默认使用Object类中的equals方法进行判断，而Object类中的equals方法，依赖地址值进行判断。
 
+
+
+
+
 ## 2.Collection的遍历方式
 
 ### 1.迭代器Iterator
@@ -1923,6 +1927,54 @@ Lambda表达式遍历--仅仅想遍历，那么使用增强for或Lambda表达式
 普通for循环(因为List集合存在索引)--如果遍历的时候想操作索引，可以用普通for。
 
 列表迭代器遍历--在遍历的过程中需要添加元素，请使用列表迭代器
+
+### Collections.addAll() 的使用 以及和list.addAll() 的区别
+
+ Collections 是java.util 下的一个类 ,可以直接使用
+
+下面下一个往list 里面添加数据的方法
+
+**1.普通的写法**
+
+```java
+   ArrayList<String> list = new ArrayList<>();
+        list.add("河南");
+        list.add("郑州");
+        list.add("开封");
+        list.add("周口");
+        list.add("商丘");
+```
+
+**2.使用:Collections.addAll()**
+
+```java
+  ArrayList<String> list = new ArrayList<>();
+        Collections.addAll(list, "河南", "郑州", "开封", "周口", "商丘");
+```
+
+**3.或者定义一个数组添加到list 中**
+
+```java
+  String[] arr = {"河南", "郑州", "开封", "周口", "商丘"};
+        ArrayList<String> list = new ArrayList<>();
+        Collections.addAll(list, arr);
+```
+
+**4.list.addAll 无法直接添加多个元素,也不能直接添加一个数组, 需要转换下**
+
+当数量过多的时候 建议使用Collections.addAll() ,数量少的时候,使用哪个都可以,看个人习惯吧.
+
+```java
+  String[] arr = {"河南", "郑州", "开封", "周口", "商丘"};
+        ArrayList<String> list = new ArrayList<>();
+        list.addAll(Arrays.asList(arr));
+ 
+// 或者
+ String[] arr = {"河南", "郑州", "开封", "周口", "商丘"};
+        ArrayList<String> list = new ArrayList<>(Arrays.asList(arr));
+```
+
+
 
 ### 列表迭代器遍历--ListIterator
 
@@ -2160,7 +2212,55 @@ of方法的形参是一个可变参数，可以传递一些零散的数据，也
 
 修改Stream流中的数据，**不会影响原来集合或者数组中的数据。**
 
-> 实例：
+### split方法
+
+在日常编写代码时，我们经常遇到需要将一串字符串中的数据进行分析摘取，从中获得分隔符外的数据，此时便不得不提`split`方法。
+
+分隔符可以是任意字符、符号、数字、字符串等。
+
+**1.单个分隔符**
+
+```java
+        String str="2024,text,今天";
+        //单个分隔符用引号括起来即可
+        String[] data = str.split(",");
+        for(int i=0;i< data.length;i++)
+            System.out.println(data[i]);
+```
+
+**注意**：
+
+如果分隔符本身就是"`|`"，那么就需要使用转义字符`\`让其产生效果，否则结果相反。
+
+```java
+String str="a|bc|8";
+        //java中\\表示一个普通\,\+特殊字符表示字符本身
+        String[] data = str.split("\\|");
+        for(int i=0;i< data.length;i++)
+            System.out.println(data[i]);
+```
+
+**2.多个分隔符**
+
+```java
+String str="2024年11月20日;英语,数学,语文;";
+        //多个分隔符用引号括起来，并且用“|”进行分割
+        String[] data = str.split(",|;");
+        for(int i=0;i< data.length;i++)
+            System.out.println(data[i]);
+```
+
+**3.正则表达式表示分隔符**
+
+```java
+String str="2018年11月18日abcd85gg688";
+        //正则表达式中\d+表示一个或多个数字,java中\\表示一个普通\
+        String[] data = str.split("\\d+");
+        for(int i=0;i< data.length;i++)
+            System.out.println(data[i]);
+```
+
+> 实例1：
 
 ```java
 List<String> l=new ArrayList<>();
@@ -2214,6 +2314,54 @@ Stream.concat(l.stream(), l.stream()).forEach(s->System.out.print(s+" "));
                 .forEach(s->System.out.println(s));
 ```
 
+> 实例3：(**字符串过滤并收集**)
+
+```java
+//题目：创建一个ArrayList集合，并添加以下字符串，字符串中前面是姓名，后面是年龄
+//("zhangsan,23","lisi,24","wangwu,25")
+//保留年龄大于等于24岁的人，并将结果收集到Map集合中，姓名为键，年龄为值
+ArrayList<String> a=new ArrayList<>();
+            Collections.addAll(a,"zhangsan,23","lisi,24","wangwu,25");
+            Map<String,Integer> map=a.stream()
+            .filter(s->Integer.parseInt(s.split(",")[1])>=24)   //Integer.parseInt是类型转换
+            .collect(Collectors.toMap(
+                    s->s.split(",")[0],
+                    s->Integer.parseInt(s.split(",")[1])));
+                    System.out.println(map);
+```
+
+> 实例4：(**自定义类型过滤并收集**)
+
+```java
+/* 
+现在有两个ArrayList集合
+第一个集合中:存储6名男演员的名字和年龄。第二个集合中:存储6名女演员的名字和年龄
+姓名和年龄中间用逗号隔开。比如:张三,23
+要求完成如下的操作:
+1，男演员只要名字为3个字的前两人
+2，女演员只要姓杨的，并且不要第一个
+3，把过滤后的男演员姓名和女演员姓名合并到一起
+4，将上一步的演员信息封装成Actor对象
+5，将所有的演员对象都保存到List集合中
+备注:演员类Actor，属性有:name，age
+*/
+ArrayList<String> t1=new ArrayList<>();
+            ArrayList<String> t2=new ArrayList<>();
+            Collections.addAll(t1, "张亮,18","李亮,20","三岁岁,29","李浩天,21","张三,12","李四天,21");
+            Collections.addAll(t2, "杨熙,21","赵梅,21","李每美,33","萧苏胡,12","李曦,19","杨随天,21");
+            Stream<String> stream1 = t1.stream()
+            .filter(s->(s.split(",")[0]).length()==3)
+            .limit(2);
+            Stream<String> stream2 = t2.stream()
+            .filter(s->s.split(",")[0].startsWith("杨"))
+            .skip(1);
+            List<Actor> list=Stream.concat(stream1, stream2)
+                    .map(s->new Actor(s.split(",")[0],Integer.parseInt(s.split(",")[1])))
+                    .collect(Collectors.toList());
+```
+
+
+
 ## 3.终结方法
 
 | 名称                          | 说明                       |
@@ -2236,12 +2384,256 @@ l.add("张翠山");
 l.add("张良");
 l.add("王二麻子");
 l.add("谢广坤");
-l.stream().forEach(s->System.out.println(s));             //遍历
+l.stream().forEach(s->System.out.println(s));             //遍历--forEach
 System.out.println("==========================");
 long count=l.stream().count();
-System.out.println(count);                                //统计
+System.out.println(count);                                //统计--count
 System.out.println("==========================");
-Object[] arr1=l.stream().toArray();                       //收集流中的数据，放在数组中
+Object[] arr1=l.stream().toArray();                       //收集流中的数据，放在数组中--toArray
 System.out.println(Arrays.toString(arr1));
+```
+
+```java
+//收集流中的数据，放到集合中--Collect
+ArrayList<String> strings = new ArrayList<>();
+    strings.add("张无忌");
+    strings.add("周芷若");
+    strings.add("赵敏");
+    strings.add("张强");
+    strings.add("张三丰");
+    strings.add("张三丰");
+
+
+    // 1、获取流中姓"张"的并转化为set集合
+    Set<String> set = strings.stream().filter(s -> s.startsWith("张")).collect(Collectors.toSet());
+    System.out.println(set);
+    System.out.println("-----------------------------------");
+    // 2、获取流中姓"张"的并转化为list集合
+    List<String> list = strings.stream().filter(s -> s.startsWith("张")).collect(Collectors.toList());
+    System.out.println(list);
+    System.out.println("-----------------------------------");
+    // 2、获取流中姓"张"的并转化为数组
+    String[] arr = strings.stream().filter(s -> s.startsWith("张")).toArray(String[]::new);
+    for (String s : arr) {
+      System.out.println(s);
+    }
+```
+
+
+
+# 七、方法引用
+
+## 1.基础概念
+
+方法引用是把已经存在的方法拿过来用，当做函数式接口中抽象方法的方法体，`::`是什么方法引用符。
+
+方法引用时要注意的点：
+
+- 需要有函数式接口
+- 被引用方法必须已经存在
+- 被引用方法的形参和返回值需要跟抽象方法保持一致
+- 被引用方法的功能要满足当前的需求
+
+## 2.引用静态方法
+
+**格式：**类名`::`静态方法
+
+**范例：**`Integer::parseInt`
+
+> 实例：
+
+```java
+ArrayList<String> list=new ArrayList<>();
+            Collections.addAll(list,"1","2","3","4","5");		
+list.stream()
+        .map(Integer::parseInt)
+        .forEach(s->System.out.println(s));
+```
+
+## 3.引用成员方法
+
+格式：对象`::`成员方法
+
+- 其他类：其他类对象`::`方法名
+- 本类：this`::`方法名
+- 父类：super`::`方法名
+
+**1.其他类对象**
+
+```java
+//主.java文件
+package mycode;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class mycodetext{
+        public static void main(String[] args){
+            ArrayList<String> list=new ArrayList<>();
+            Collections.addAll(list,"张无忌","周芷若","赵敏","张强","张三丰");
+            list.stream().filter(new StringOperation()::stringJudge)
+                    .forEach(s->System.out.println(s));
+        }
+    }
+
+//另一个.java文件
+package mycode;
+public class StringOperation {
+    public boolean stringJudge(String s) {
+        return s.startsWith("张") && s.length() == 3;
+    }
+}
+```
+
+**2.本类**
+
+ **格式：**this`::`成员方法
+
+> **注：**如果是在静态方法中，是没有this的，只能用对象名
+
+```java
+public static void main(String[] args) {
+    ArrayList<String> list = new ArrayList<>();
+    Collections.addAll(list,  "张无忌",  "张强", "张三丰", "张翠山", "张良", "王二麻子", "谢广坤");
+ 
+    List<String> collect= new Demo4().method(list);
+    System.out.println(collect);
+}
+ 
+public List<String> method(List<String> list){
+    return list.stream().filter(this::stringJudge).collect(Collectors.toList());
+}
+ 
+public boolean stringJudge(String s){
+    return s.startsWith("张") && s.length() == 3;
+}
+```
+
+**3.父类**
+
+**格式：**super`::`成员方法
+
+> **注：**如果是在静态方法中，是没有super的，只能用对象名
+
+```java
+public class Demo5 {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        Collections.addAll(list,  "张无忌",  "张强", "张三丰", "张翠山", "张良", "王二麻子", "谢广坤");
+ 
+        List<String> collect = new Son().method(list);
+        System.out.println(collect);
+    }
+}
+ 
+class Son extends Father {
+    public List<String> method(List<String> list){
+        return list.stream().filter(super::stringJudge).collect(Collectors.toList());
+    }
+}
+ 
+class Father{
+    public boolean stringJudge(String s){
+        return s.startsWith("张") && s.length() == 3;
+    }
+}
+```
+
+## 4.引用构造方法
+
+**格式：**类名`::`new
+
+**范例：**`Student::new`
+
+```java
+//第一个文件--获得Student类中的所有值并打印出来
+package mycode;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+public static void main(String[] args) {
+    ArrayList<String> list = new ArrayList<>();
+    Collections.addAll(list, "张无忌,32", "张强,29", "张三丰,56", "张翠山,48", "张良,25", "王二麻子,28", "谢广坤,39");
+ 
+    List<Student> collect = list.stream().map(Student::new).collect(Collectors.toList());
+ 
+    System.out.println(collect);
+}
+//第二个文件
+package mycode;
+
+public class Student {
+  private String name;
+  private int age;
+
+  public Student() {
+  }
+
+  public Student(String s) {
+    this.name = s.split(",")[0];
+    this.age = Integer.parseInt(s.split(",")[1]);
+  }
+
+  public Student(String name, int age) {
+    this.name = name;
+    this.age = age;
+  }
+  public String toString() {
+    return "Student{name='" + name + "', age=" + age + "}";
+}
+
+}
+```
+
+## 5.其他调用方式
+
+**1、使用类名引用成员方法**
+
+**格式**：类名`::`成员方法
+
+**范例**：`String::substring`
+
+> 特有规则： 
+>
+
+- 引用处必须是函数式接口
+
+- 被引用的方法必须已经存在
+- **被引用方法的形参，需要跟抽象方法的第二个形参到最后一个形参保持一致，返回值需要保持一致**
+- 被引用方法的功能要满足当前需求
+
+> 抽象方法形参的详解：
+
+- 第一个参数：表示被引用方法的调用者，决定了可以引用哪些类中的方法，在stream 流当中，第一个参数一般都表示流里面的每一个数据。假没流里面的数据是字符串，那么使用这种方式进行方法引用，只能引用 string 这个类中的方法
+- 第二个参数到最后一个参数：跟被引用方法的形参保持一致，如果没有第二个参数，说明被引用的方法需要是无参的成员方法
+
+> 局限性：
+
+不能引用所有类中的成员方法。是跟抽象方法的第一个参数有关，这个参数是什么类型的，那么就只能引用这个类中的方法。
+
+```java
+ArrayList<String> list = new ArrayList<>();
+Collections.addAll(list, "aaa", "bbb", "ccc", "ddd");
+ //引用String中的toUpperCase方法并收集到collect中
+List<String> collect = list.stream().map(String::toUpperCase).collect(Collectors.toList());
+System.out.println(collect);
+```
+
+**2、引用数组的构造方法**
+
+**格式：**类名`::`new
+
+**范例：**`Student::new`
+
+```java
+ArrayList<Integer> list = new ArrayList<>();
+Collections.addAll(list, 1, 2, 3, 4, 5);
+ //引用数组的构造方法将list放入数组arr中
+Integer[] arr = list.stream().toArray(Integer[]::new);
+// List<Integer> l=list.stream().collect(Collectors.toList());           //此语句和上一条语句的作用相同
+System.out.println(Arrays.toString(arr));
 ```
 
