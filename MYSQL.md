@@ -362,8 +362,32 @@ SELECT 字段1 [AS 别名1],字段2[AS 别名2]...FROM 表名;
 
 **3.去除重复记录**
 
+> **语法:**
+
 ```mysql
 SELECT DISTINCT 字段列表 FROM 表名;
+```
+
+
+
+> **实例：(多个字段去重)**
+
+```sql
+SELECT DISTINCT PLAN_NUMBER,PRODUCT_NAME FROM psur_list;
+```
+
+**期望结果：只对第一个参数PLAN_NUMBER取唯一值**
+
+- 解决办法一：使用`group_concat` 函数
+
+```sql
+SELECT GROUP_CONCAT(DISTINCT PLAN_NUMBER) AS PLAN_NUMBER,PRODUCT_NAME from psur_list GROUP BY PLAN_NUMBER;
+```
+
+- 解决办法二：使用`group by`
+
+```sql
+SELECT PLAN_NUMBER,PRODUCT_NAME FROM psur_list GROUP BY PLAN_NUMBER;
 ```
 
 ### DQL-条件查询
@@ -1545,7 +1569,6 @@ count的几种用法：
 
   InnoDB引擎并不会把全部字段取出来，而是专门做了优化，不取值，服务层直接按行进行累加。
 
-  
 
 `按照效率排序的话，count(字段)<count(主键 id)<count(1)≈count(*)，所以尽量使用 count(*)。`
 
@@ -1571,3 +1594,116 @@ update student set no='2000100105'where name='韦一笑';
 ```
 
 InnoDB的行锁是针对索引加的锁，不是针对记录加的锁,并且该索引不能失效，否则会从行锁升级为表锁。
+
+## 4.视图
+
+### **1.概念**
+
+视图(View)是一种虚拟存在的表。视图中的数据并不在数据库中实际存在，行和列数据来自定义视图的查询中使用的表，并且是在使用视
+
+图时动态生成的。
+
+通俗的讲，视图只保存了查询的SOL逻辑，不保存查询结果。所以我们在创建视图的时候，主要的工作就落在创建这条SOL查询语句上。
+
+> 作用
+
+- 视图不仅可以简化用户对数据的理解，也可以简化他们的操作。那些被经常使用的查询可以被定义为视图，从而使得用户不必为以后的操作每次指定全部的条件。
+- 数据库可以授权，但不能授权到数据库特定行和特定的列上。通过视图用户只能查询和修改他们所能见到的数据。
+- 视图可帮助用户屏蔽真实表结构变化带来的影响。
+
+### **2.语法**
+
+在 SQL 中，视图是基于 SQL 语句的结果集的可视化的表。
+
+视图包含行和列，就像一个真实的表。视图中的字段就是来自一个或多个数据库中的真实的表中的字段。
+
+您可以向视图添加 SQL 函数、WHERE 以及 JOIN 语句，也可以呈现数据，就像这些数据来自于某个单一的表一样。
+
+**1.创建**
+
+```mysql
+CREATE [OR REPLACE] VIEW 视图名称[(列名列表)]AS SELECT语句 [WITH[CASCADED | LOCAL] CHECK OPTION]
+```
+
+**2.查询**
+
+```sql
+#查看创建视图语句:
+SHOW CREATE VIEW 视图名称;
+#查看视图数据:
+SELECT * FROM 视图名称……;
+```
+
+**3.修改**
+
+```sql
+#方式一:
+CREATE [OR REPLACE] VIEW 视图名称(列名列表)] AS SELECT语句 [WITH [CASCADED | LOCAL ] CHECK OPTION]
+#方式二:
+ALTER VIEW 视图名称[(列名列表)] AS SELECT语句 [WITH [CASCADED | LOCAL] CHECK OPTION]
+```
+
+**4.删除**
+
+```sql
+DROP VIEW [IF EXISTS] 视图名称 [,视图名称]...
+```
+
+### 3.检查选项CASCADED 和 LOCAL
+
+当使用WITH CHECKOPTION子句创建视图时，MVSOL会通过视图检查正在更改的每个行，例如 插入，更新，删除，以使其符合视图的
+
+定义。MySOL允许基于另一个视图创建视图，它还会检查依赖视图中的规则以保持一致性。为了确定检查的范围，mysql提供了两个选
+
+:`CASCADED` 和 `LOCAL`，默认值为 `CASCADED`。
+
+**1.`CASCADED` :**
+
+```sql
+create view v1 as select id,name from student where id <= 20 with cascaded check option;
+```
+
+**2.`LOCAL`：**
+
+```sql
+create view v2 as select id , name from v1 where id >= 10 with local check option;
+```
+
+### 4.视图的更新
+
+要使视图可更新，视图中的行与基础表中的行之间必须存在一对一的关系。如果视图包含以下任何一项，则该视图不可更新:
+
+- 聚合函数或窗口函数(SUM()、MIN()、MAX()、COUNT()等)
+- DISTINCT
+- GROUP BY
+- HAVING
+- UNION 或者 UNION ALL
+
+在 SQL 中，你不能直接使用 UPDATE 语句来更新视图，因为视图是基于查询结果生成的虚拟表，而不是实际存储数据的表。
+
+更新视图的实质是通过更新视图所基于的表中的数据，然后视图会反映这些变化。
+
+```sql
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
+
+其中，table_name 是基础表的名称，column1, column2, ... 是要更新的列，value1, value2, ... 是新的值，condition 是更新的条件。
+
+现在，我们希望向 "Current Product List" 视图添加 "Category" 列。我们将通过下列 SQL 更新视图：
+
+举例来说，如果你有一个名为 high_salary_employees 的视图，显示工资高于 50000 的员工信息，而这个视图基于 employees 表的查询结果，你可以通过以下步骤来更新数据：
+
+```sql
+-- 步骤 1: 更新 employees 表中的数据
+UPDATE employees
+SET salary = 60000
+WHERE employee_id = 1001;
+
+-- 步骤 2: 查询更新后的高工资员工视图
+SELECT *
+FROM high_salary_employees;
+```
+
+这样，你更新了 employees 表中的数据，而视图 high_salary_employees 将反映出这些变化。
