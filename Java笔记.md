@@ -2637,3 +2637,68 @@ Integer[] arr = list.stream().toArray(Integer[]::new);
 System.out.println(Arrays.toString(arr));
 ```
 
+# 八、文件
+
+## 1.基础概念与常用类
+
+- File对象就表示一个路径，可以是文件的路径、也可以是文件夹的路径
+- 这个路径可以是存在的，也允许是不存在的
+
+| 方法名称                                | 说明                                               |
+| --------------------------------------- | -------------------------------------------------- |
+| public File(String pathname)            | 根据文件路径创建文件对象                           |
+| public File(String parent,String child) | 根据父路径名字符串和子路径名字符串创建文件对象     |
+| public File(File parent,String child)   | 根据父路径对应文件对象和子路径名字符串创建文件对象 |
+
+```java
+//--1
+String str="C:\\Users\\wuqian\\Desktop\\dzyszz.txt";
+File f1=new File(str);
+System.out.println(f1);
+//--2
+String parent="C:\\Users\\wuqian\\Desktop";
+String child="dzyszz.txt";
+File f2=new File(parent,child);
+System.out.println(f2);
+//--3
+File f3=new File(parent+"\\"+child);
+System.out.println(f3);
+```
+
+## 2.File的常见成员方法
+
+### 1.判断、获取
+
+| 方法名称                        | 说明                               |
+| ------------------------------- | ---------------------------------- |
+| public boolean isDirectory()    | 判断此路径名表示的File是否为文件夹 |
+| public boolean isFile()         | 判断此路径名表示的File是否为文件   |
+| public boolean exists()         | 判断此路径名表示的File是否存在     |
+| public long length()            | 返回文件的大小(字节数量)           |
+| public string getAbsolutePath() | 返回文件的绝对路径                 |
+| public string getPath()         | 返回定义文件时使用的路径           |
+| public string getName()         | 返回文件的名称，带后缀             |
+| public long lastModified()      | 返回文件的最后修改时间(时间毫秒值) |
+
+```java
+File f1=new File("C:\\Users\\wuqian\\Desktop\\dzyszz.txt");
+System.out.println(f1.isDirectory());       //false
+System.out.println(f1.isFile());            //true
+System.out.println(f1.exists());            //true
+```
+
+### 2.创建、删除
+
+| 方法名称                       | 说明                 |
+| ------------------------------ | -------------------- |
+| public boolean createNewFile() | 创建一个新的空的文件 |
+| public boolean mkdir()         | 创建单级文件夹       |
+| public boolean mkdirs()        | 创建多级文件夹       |
+| public boolean delete()        | 删除文件、空文件夹   |
+
+### 3.获取并遍历
+
+| 方法名称                  | 说明                     |
+| ------------------------- | ------------------------ |
+| public File[] listFiles() | 获取当前该路径下所有内容 |
+
