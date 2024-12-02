@@ -1,4 +1,4 @@
-## 记录一下自己的笔记T^T(原repository与2024-12被删除，在此留作纪念)
+## 记录一下自己的笔记T^T(原repository与2024-12被删除)
 **LIST**
 - [JAVA](https://github.com/qiqizizzz/qiqizizzz-codenotes/blob/main/Java%E7%AC%94%E8%AE%B0.md)
 - [前端--HTML/CSS/JAVASCRIPT](https://github.com/qiqizizzz/qiqizizzz-codenotes/blob/main/%E5%89%8D%E7%AB%AF.md?plain=1)
